@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const apiRouter = require('./routes/api');
 
 require('dotenv').config();
 
@@ -25,6 +26,14 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+// MAY OR MAY NOT NEED
+// app.use(express.urlencoded());
+// app.use('/client', express.static(path.resolve(__dirname, '../client')));
+
+
+app.use('/api/user', apiRouter);
 
 // app.use('/');
 app.get('/api', (req, res) => {
