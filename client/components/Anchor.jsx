@@ -6,7 +6,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import CreateIcon from '@mui/icons-material/Create';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -16,12 +15,10 @@ export default function Anchor() {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        gap: '8rem',
         width: '100%',
         maxWidth: 360,
-        bgcolor: 'background.paper',
+        bgcolor: 'inherit',
       }}
     >
       <nav aria-label='main navigation files'>
