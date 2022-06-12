@@ -6,9 +6,9 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
-export default function ProductItem() {
+export default function ProductItem({ handleOpen }) {
   return (
-    <Card sx={{ maxWidth: 345, position: 'relative' }}>
+    <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia
         component='img'
         height='194'
