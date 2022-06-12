@@ -6,28 +6,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import CreateIcon from '@mui/icons-material/Create';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
-export default function Anchor() {
+export default function Anchor({ setCurrent }) {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
         width: '100%',
         maxWidth: 360,
-        bgcolor: 'background.paper',
+        bgcolor: 'inherit',
       }}
     >
       <nav aria-label='main navigation files'>
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => setCurrent('home')}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
