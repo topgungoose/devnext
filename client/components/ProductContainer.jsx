@@ -1,24 +1,19 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import ProductItem from './ProductItem';
-import '../styles/ProductContainer.css'
+import Grid from '@mui/material/Grid';
 
-export default function BasicStack() {
+export default function ProductContainer() {
   return (
-    <div className='product-container'>
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-    </div>
+    <Grid
+      container
+      spacing={{ xs: 2, md: 3 }}
+      columns={{ xs: 4, sm: 8, md: 12, lg: 16}}
+    >
+      {Array.from(Array(20)).map((_, index) => (
+        <Grid item xs={4} sm={4} md={4}  key={index}>
+          <ProductItem />
+        </Grid>
+      ))}
+    </Grid>
   );
 }

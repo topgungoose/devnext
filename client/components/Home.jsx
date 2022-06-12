@@ -7,8 +7,8 @@ import Dialog from '@mui/material/Dialog';
 import Post from './Post';
 
 export default function Home() {
-  const [ open, setOpen ] = useState(false);
-  const handleClose = () => setOpen(false)
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
   return (
     <div className='home'>
       <div className='container'>
@@ -16,18 +16,14 @@ export default function Home() {
       </div>
       <Fab
         color='primary'
-        sx={{ position: 'absolute', top: 0, right: 0 }}
+        sx={{ position: 'absolute', top: 0, right: 0, marginBlock: 1 }}
         aria-label='add'
-        onClick = {() => setOpen(true)}
+        onClick={() => setOpen(true)}
       >
         <AddIcon />
       </Fab>
-      <Dialog 
-      fullWidth 
-      open={open}
-      maxWidth="sm"
-      >
-        <Post handleClose={handleClose}/>
+      <Dialog fullWidth open={open} maxWidth='sm'>
+        <Post handleClose={handleClose} />
       </Dialog>
     </div>
   );
