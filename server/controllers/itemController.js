@@ -18,28 +18,30 @@ itemController.postItem = (req, res, next) => {
         })
 }
 
-itemController.findItem = (req, res, next) => {
-    const { name } = req.body
-    Item.find({name})
-        .then(foundItem => {
-            if (foundItem.length === 0) {
-                res.locals.item = foundItem
-                res.locals.succsess = true
-                return next()
-            }
-            else {
-                res.locals.success = false
-                return next()
-            }
+// itemController.findItem = (req, res, next) => {
+//     const { name, price, details } = req.body
+//     Item.find({name: name})
+//         .then(foundItem => {
+
+//             res.locals.item = foundItem
+//             res.locals.succsess = true
+//             return next()
+//             // if (foundItem.length === 0) {
+                
+//             // }
+//             // else {
+//             //     res.locals.success = false
+//             //     return next()
+//             // }
             
-        })
-        .catch(err => {
-            next({
-                log: `itemController.findItem: ERROR: ${err}`,
-                err:  {err: 'Error occured in itemController.findItem'}
-            })
-        })
-}
+//         })
+//         .catch(err => {
+//             next({
+//                 log: `itemController.findItem: ERROR: ${err}`,
+//                 err:  {err: 'Error occured in itemController.findItem'}
+//             })
+//         })
+// }
 
 itemController.updateItem = (req, res, next) => {
     const {name, price, details} = req.body
@@ -57,20 +59,20 @@ itemController.updateItem = (req, res, next) => {
         })
 }
 
-itemController.deleteItem = (req, res, next) => {
-    const {name} = req.body
+// itemController.deleteItem = (req, res, next) => {
+//     const {name} = req.body
 
-    Item.deleteOne({name})
-        .then(item => {
-            return next()
-        })
-        .catch(err => {
-            next({
-                log: `itemController.deleteItem: ERROR: ${err}`,
-                err:  {err: 'Error occured in itemController.deleteItem'}
-            })
-        })
-}
+//     Item.deleteOne({name : name})
+//         .then(item => {
+//             return next()
+//         })
+//         .catch(err => {
+//             next({
+//                 log: `itemController.deleteItem: ERROR: ${err}`,
+//                 err:  {err: 'Error occured in itemController.deleteItem'}
+//             })
+//         })
+// }
 
 
 module.exports = itemController

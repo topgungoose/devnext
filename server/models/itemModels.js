@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 
 const itemSchema = new Schema ({
-    Name : {type: String, required: true, unique: true},
-    Price: {type: Number, required: true},
-    Details: {type: String}
+    name : {type: String, required: true, unique: true},
+    price: {type: Number, required: true},
+    details: {type: String}
 })
 
 module.exports = mongoose.model('Items', itemSchema)
