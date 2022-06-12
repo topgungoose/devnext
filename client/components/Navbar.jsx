@@ -164,7 +164,8 @@ export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    // <Box sx={{ flexGrow: 1 }}>
+    <>
       <AppBar open={open} sx={{ backgroundColor: '#57cc99' }} position='fixed'>
         <Toolbar>
           <IconButton
@@ -236,6 +237,7 @@ export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </Box>
+    {/* </Box> */}
+    </>
   );
 }

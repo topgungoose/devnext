@@ -1,17 +1,6 @@
-// import React from 'react';
 import Navbar from '../components/Navbar';
 import Anchor from '../components/Anchor';
 import Home from '../components/Home';
-// export default function Main() {
-//   return (
-//     <>
-
-//       <Anchor />
-//       <div>Main</div>
-//     </>
-//   );
-// }
-
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -24,8 +13,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-const drawerWidth = 240;
 import { useLocation } from 'react-router-dom';
+
+const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -50,18 +40,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
+
   ...theme.mixins.toolbar,
   justifyContent: 'space-between',
 }));
 
 export default function MainPage() {
-  //   const [user, setUser] = useState(useLocation().state.user);
-
-  // console.log(user);
-
-  //   const [value, setValue] = React.useState(currentDoc ? currentDoc.body : '');
-
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -114,11 +98,12 @@ export default function MainPage() {
           </IconButton>
         </DrawerHeader>
         <Divider />
+
         <Anchor />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {/* <Home /> */}
+        <Home />
       </Main>
     </Box>
   );

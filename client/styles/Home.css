@@ -1,0 +1,11 @@
+.home {
+  /* background-color: blue; */
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.container {
+  width: 80%;
+  margin-inline: auto;
+}
