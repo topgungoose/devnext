@@ -1,0 +1,6 @@
+.product-container {
+  position: relative;
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(4, 1fr);
+  grid-gap: 7ch;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
+import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -12,8 +12,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import StorefrontIcon from '@mui/icons-material/Storefront';
@@ -58,9 +56,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })(({ theme, open }) => ({
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  }));
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -149,18 +164,21 @@ export default function Navbar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='static'>
+    // <Box sx={{ flexGrow: 1 }}>
+    <>
+      <AppBar open={open} sx={{ backgroundColor: '#57cc99' }} position='fixed'>
         <Toolbar>
           <IconButton
             size='large'
             edge='start'
             color='inherit'
             aria-label='open drawer'
-            sx={{ mr: 2 }}
+            onClick={handleDrawerOpen}
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
+
           <StorefrontIcon />
           <Typography
             variant='h6'
@@ -170,6 +188,7 @@ export default function Navbar() {
           >
             DevNext
           </Typography>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -196,7 +215,7 @@ export default function Navbar() {
               aria-label='account of current user'
               aria-controls={menuId}
               aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
+              //   onClick={handleProfileMenuOpen}
               color='inherit'
             >
               <AccountCircle />
@@ -218,6 +237,7 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </Box>
+    {/* </Box> */}
+    </>
   );
 }
