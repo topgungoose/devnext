@@ -56,7 +56,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
+export default function Navbar({
+  open,
+  handleDrawerOpen,
+  drawerWidth,
+  setCurrent,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -204,6 +209,7 @@ export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
               size='large'
               aria-label='show 17 new notifications'
               color='inherit'
+              onClick={() => setCurrent('favs')}
             >
               <Badge badgeContent={0} color='error'>
                 <FavoriteIcon />
@@ -237,7 +243,7 @@ export default function Navbar({ open, handleDrawerOpen, drawerWidth }) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    {/* </Box> */}
+      {/* </Box> */}
     </>
   );
 }
