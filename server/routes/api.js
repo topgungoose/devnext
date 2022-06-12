@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const itemController = require('../controllers/itemController');
 const router = express.Router();
 
 
@@ -20,6 +21,33 @@ router.post('/login', userController.verifyUser, (req, res) => {
     res.status(404).send(JSON.stringify({success: false,message: 'Log in failed!'}));
   }
 });
+
+///////////////////////////////////////////// Do these have to be in a different router? ///////////////////////////////////////////// 
+// router.post('/postitem', itemController.postItem, (req, res) => {
+//   res.status(200).send('Item post succeeded!')
+// })
+
+// router.post('findItem', itemController.findItem, (req, res) => {
+//   res.setHeader("Content-Type","application/json");
+//   //if it is verified
+//   if(res.locals.success)
+//   {
+//     res.status(200).send(JSON.stringify({success: true,message: 'Found post!'}));
+//   }
+//   else 
+//   {
+//     //res.status(404).send('Log in failed!');
+//     res.status(404).send(JSON.stringify({success: false,message: 'Could not find post'}));
+//   }
+// })
+
+// router.post('/updateItem'), itemController.updateItem, (req, res) => {
+//   res.status(200).send('Updated item!')
+// }
+
+// router.post('/deleteItem'), itemController.deleteItem, (req, res) => {
+//   res.status(200).send('Deleted item!')
+// }
 
 // router.get('/',
 //   starWarsController.getCharacters,
