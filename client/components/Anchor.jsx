@@ -11,11 +11,10 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
-export default function Anchor() {
+export default function Anchor({ setCurrent }) {
   return (
     <Box
       sx={{
-        gap: '8rem',
         width: '100%',
         maxWidth: 360,
         bgcolor: 'inherit',
@@ -24,7 +23,7 @@ export default function Anchor() {
       <nav aria-label='main navigation files'>
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => setCurrent('home')}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
