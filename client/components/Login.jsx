@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
 
   const [state,setState] = useState({username: "", password: ""});
+  const navigate = useNavigate();
 
   const paperStyle = {padding: 20, height: "40vh", width: 500, margin: "20px auto",}
   const avatarStyle = {backgroundColor:'#FF6F61'};
@@ -37,7 +38,7 @@ export default function Login() {
       .then(data => {
         if(data.success)
         {
-          Navigate("/home");
+          navigate("/home");
         }
         else
         {
