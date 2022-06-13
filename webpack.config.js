@@ -16,7 +16,10 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/react'],
-          plugins: ['@babel/plugin-transform-runtime', '@babel/transform-async-to-generator'],
+          plugins: [
+            '@babel/plugin-transform-runtime',
+            '@babel/transform-async-to-generator',
+          ],
         },
       },
       {
@@ -24,25 +27,38 @@ module.exports = {
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true, // webpack@1.x
+              disable: true, // webpack@2.x and newer
+            },
+          },
+        ],
+      },
     ],
-    },
-  
-    plugins: [new HTMLWebpackPlugin({ template: './client/index.html' })],
-    
-    devServer: {
-      host: 'localhost',
-      port: 8080,
-      hot: true,
-      open: true,
-      compress: true,
+  },
 
-      webSocketServer: 'ws',
+  plugins: [new HTMLWebpackPlugin({ template: './client/index.html' })],
 
-      historyApiFallback: true,
+  devServer: {
+    host: 'localhost',
+    port: 8080,
+    hot: true,
+    open: true,
+    compress: true,
 
-     static: {
-        directory: path.join(__dirname, 'build'),
-        publicPath: '/',
+    webSocketServer: 'ws',
+
+    historyApiFallback: true,
+
+    static: {
+      directory: path.join(__dirname, 'build'),
+      publicPath: '/',
     },
 
     headers: { 'Access-Control-Allow-Origin': '*' },
@@ -59,7 +75,7 @@ module.exports = {
     },
     watchFiles: ['client'],
   },
-  
+
   resolve: {
     extensions: ['.js', '.jsx'],
   },
