@@ -87,7 +87,7 @@ export default function MainPage() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#c7f9cc',
+            backgroundColor: '#9FAEE5',
           },
         }}
         variant='persistent'
@@ -96,7 +96,7 @@ export default function MainPage() {
       >
         <DrawerHeader>
           <Stack direction='row' sx={{ alignItems: 'center' }} spacing={1}>
-            <Avatar sx={{ backgroundColor: '#212529' }}>S</Avatar>
+            <Avatar sx={{ backgroundColor: '#9FAEE5' }}>S</Avatar>
             <Typography variant='h5' component='p'>
               Satty
             </Typography>
