@@ -14,6 +14,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Favs from '../components/Favs';
+import MOCK_DATA from '../../MOCK_DATA';
 
 import { useLocation } from 'react-router-dom';
 
@@ -51,7 +52,15 @@ export default function MainPage() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+  const [searchInput, setSearchInput] = useState('');
+
+  // const [itemData, setItemData] = useState(MOCK_DATA);
+
   const [current, setCurrent] = useState('home');
+
+  const itemData = MOCK_DATA.filter(({ name }) =>
+    name.toLowerCase().includes(searchInput)
+  );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -64,7 +73,7 @@ export default function MainPage() {
   let currentElement;
 
   if (current === 'home') {
-    currentElement = <Home />;
+    currentElement = <Home itemData={itemData} />;
   } else if (current === 'favs') {
     currentElement = <Favs />;
   }
@@ -78,6 +87,8 @@ export default function MainPage() {
         drawerWidth={drawerWidth}
         theme={theme}
         setCurrent={setCurrent}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
       />
       <Drawer
         sx={{

@@ -62,6 +62,8 @@ export default function Navbar({
   handleDrawerOpen,
   drawerWidth,
   setCurrent,
+  searchInput,
+  setSearchInput,
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -202,7 +204,9 @@ export default function Navbar({
             </SearchIconWrapper>
             <StyledInputBase
               placeholder='Search…'
+              value={searchInput}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
