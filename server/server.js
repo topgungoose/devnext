@@ -7,10 +7,9 @@ const apiRouter = require('./routes/api');
 require('dotenv').config();
 
 mongoose.connect(
-
   process.env.NODE_ENV === 'test'
     ? process.env.MONGOURI_TEST // mongoURI test
-    : process.env.MONGOURI, // [roduction url
+    : process.env.MONGOURI, // production url
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,19 +27,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 // MAY OR MAY NOT NEED
 // app.use(express.urlencoded());
 // app.use('/client', express.static(path.resolve(__dirname, '../client')));
-
 
 app.use('/api/user', apiRouter);
 
 // app.use('/');
 app.get('/api', (req, res) => {
-  res.status(200).json("Hello World from Server!")
-})
-
+  res.status(200).json('Hello World from Server!');
+});
 
 app.use('*', (req, res) => {
   res.sendStatus(404);

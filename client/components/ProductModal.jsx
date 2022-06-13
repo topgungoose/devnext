@@ -7,6 +7,28 @@ import Avatar from '@mui/material/Avatar';
 import '../styles/ProductModal.css';
 
 export default function ProductModal({ handleClose }) {
+  const data = { itemId: '62a686d32af2f50c8f15d894' };
+
+  function handleClick() {
+    fetch('http://localhost:8080/api/user/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return res.json().then((json) => Promise.reject(json));
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((err) => {
+        console.log(e.error);
+      });
+  }
+
   return (
     <div className='product-modal'>
       <div className='img-container'>
@@ -69,7 +91,11 @@ export default function ProductModal({ handleClose }) {
             sx={{ color: red[500], fontSize: 50 }}
             onClick={handleClose}
           />
-          <Button sx={{ backgroundColor: '#80ed99' }} variant='contained'>
+          <Button
+            onClick={handleClick}
+            sx={{ backgroundColor: '#80ed99' }}
+            variant='contained'
+          >
             Buy!
           </Button>
           <Button variant='outlined' color='error' onClick={handleClose}>
