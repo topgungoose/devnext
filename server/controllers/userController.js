@@ -72,4 +72,39 @@ userController.verifyUser = (req, res, next) => {
   
 };
 
+// user.populate() add new instance of items in array    api/user/sell
+
+userController.updateProductList = (req, res, next) => {
+  // get id from params
+  const { id } = req.params
+  User.updateOne({id: id}, {$push: {products: res.locals.newItem._id}})
+    .then(updatedItem =>{
+      console.log(updatedItem);
+      return next();
+    })
+    .catch(err => {
+      return next({
+        log: `userController.updateProductList: ERROR: ${err}`,
+        message: { err: 'Error occured in userController.updateProductList.' }
+      })
+    })
+}
+
+userController.updateFavList = (req, res, next) => {
+  const { itemId, userId } = req.body
+  console.log(itemId, userId)
+  User.updateOne({id: userId}, {$push: {favs: itemId}})
+  .then(updatedItem =>{
+    console.log(updatedItem);
+    return next();
+  })
+  .catch(err => {
+    return next({
+      log: `userController.updateFavList: ERROR: ${err}`,
+      message: { err: 'Error occured in userController.updateFavList.' }
+    })
+  })
+}
+// user.getAllItems()   api/items/getAll
+
 module.exports = userController;

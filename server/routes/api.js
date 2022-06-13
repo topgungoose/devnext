@@ -8,11 +8,20 @@ router.post('/signup', userController.createUser, (req, res) => {
   res.status(200).send('Sign up succeed!');
 });
 
+router.post('/sell/:id', itemController.postItem, userController.updateProductList, (req, res)=>{
+  res.status(200).json(res.locals);
+})
+
+router.post('/fav', userController.updateFavList, (req, res)=>{
+  res.status(200).json(res.locals);
+})
+
 router.post('/login', userController.verifyUser, (req, res) => {
   res.setHeader("Content-Type","application/json");
   //if it is verified
   if(res.locals.found)
   {
+
     res.status(200).send(JSON.stringify({success: true,message: 'Log in succeed!'}));
   }
   else 
@@ -23,28 +32,38 @@ router.post('/login', userController.verifyUser, (req, res) => {
 });
 
 ///////////////////////////////////////////// Do these have to be in a different router? ///////////////////////////////////////////// 
-// router.post('/postitem', itemController.postItem, (req, res) => {
-//   res.status(200).send('Item post succeeded!')
-// })
 
+router.get('/', itemController.getAllItems, (req, res) => {
+  res.status(200).json(res.locals.items)
+})
+
+
+router.post('/sell', itemController.postItem, (req, res) => {
+  res.status(200).send('Item post succeeded!')
+})
+
+// still not working
 // router.post('findItem', itemController.findItem, (req, res) => {
-//   res.setHeader("Content-Type","application/json");
-//   //if it is verified
-//   if(res.locals.success)
-//   {
-//     res.status(200).send(JSON.stringify({success: true,message: 'Found post!'}));
-//   }
-//   else 
-//   {
-//     //res.status(404).send('Log in failed!');
-//     res.status(404).send(JSON.stringify({success: false,message: 'Could not find post'}));
-//   }
+
+//   res.status(200).json(res.locals.item)
+//   // res.setHeader("Content-Type","application/json");
+//   // //if it is verified
+//   // if(res.locals.success)
+//   // {
+//   //   res.status(200).send(JSON.stringify({success: true,message: 'Found post!'}));
+//   // }
+//   // else 
+//   // {
+//   //   //res.status(404).send('Log in failed!');
+//   //   res.status(404).send(JSON.stringify({success: false,message: 'Could not find post'}));
+//   // }
 // })
 
-// router.post('/updateItem'), itemController.updateItem, (req, res) => {
-//   res.status(200).send('Updated item!')
-// }
+router.post('/updateItem', itemController.updateItem, (req, res) => {
+  res.status(200).send('Updated item!')
+})
 
+// Still not working
 // router.post('/deleteItem'), itemController.deleteItem, (req, res) => {
 //   res.status(200).send('Deleted item!')
 // }
