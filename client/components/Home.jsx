@@ -5,29 +5,37 @@ import AddIcon from '@mui/icons-material/Add';
 import '../styles/Home.css';
 import Dialog from '@mui/material/Dialog';
 import Post from './Post';
+import ProductModal from './ProductModal';
 
 export default function Home() {
-  const [ open, setOpen ] = useState(false);
-  const handleClose = () => setOpen(false)
+  const [openPost, setOpenPost] = useState(false);
+  const [openItem, setOpenItem] = useState(false);
+  const [currentItemDetails, setCurrentItemDetails] = useState(null);
+
+  const handleClosePost = () => setOpenPost(false);
+  const handleCloseItem = () => setOpenItem(false);
+
+  const handleOpenItem = () => setOpenItem(true);
+  const handleOpenPost = () => setOpenPost(true);
+
   return (
     <div className='home'>
       <div className='container'>
-        <ProductContainer />
+        <ProductContainer handleOpen={handleOpenItem} />
       </div>
       <Fab
         color='primary'
-        sx={{ position: 'absolute', top: 0, right: 0 }}
+        sx={{ position: 'absolute', top: 0, right: 0, marginBlock: 1 }}
         aria-label='add'
-        onClick = {() => setOpen(true)}
+        onClick={handleOpenPost}
       >
         <AddIcon />
       </Fab>
-      <Dialog 
-      fullWidth 
-      open={open}
-      maxWidth="sm"
-      >
-        <Post handleClose={handleClose}/>
+      <Dialog fullWidth open={openPost} maxWidth='sm'>
+        <Post handleClose={handleClosePost} />
+      </Dialog>
+      <Dialog fullWidth open={openItem} maxWidth='lg'>
+        <ProductModal handleClose={handleCloseItem} />
       </Dialog>
     </div>
   );
