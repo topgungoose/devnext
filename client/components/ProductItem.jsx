@@ -38,10 +38,10 @@ export default function ProductItem({
             top: 0,
             left: 0,
             margin: 1,
-            backgroundColor: type ? '#d9ed92' : '#caf0f8',
+            backgroundColor: type === 'false' ? '#d9ed92' : '#caf0f8',
           }}
           size='small'
-          label={type ? 'Product' : 'Service'}
+          label={type === 'false' ? 'Product' : 'Service'}
         />
       </CardContent>
     </Card>
