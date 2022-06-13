@@ -4,9 +4,12 @@ const Schema = mongoose.Schema;
 
 
 const itemSchema = new Schema ({
-    name : {type: String, required: true, unique: true},
+    name : {type: String, required: true},
     price: {type: Number, required: true},
-    details: {type: String}
+    details: {type: String},
+    url: {type: String},
+    type: {type:String}
+    
 })
 
 module.exports = mongoose.model('Items', itemSchema)

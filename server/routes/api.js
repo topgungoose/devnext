@@ -8,11 +8,20 @@ router.post('/signup', userController.createUser, (req, res) => {
   res.status(200).send('Sign up succeed!');
 });
 
+router.post('/sell/:id', itemController.postItem, userController.updateProductList, (req, res)=>{
+  res.status(200).json(res.locals);
+})
+
+router.post('/fav', userController.updateFavList, (req, res)=>{
+  res.status(200).json(res.locals);
+})
+
 router.post('/login', userController.verifyUser, (req, res) => {
   res.setHeader("Content-Type","application/json");
   //if it is verified
   if(res.locals.found)
   {
+
     res.status(200).send(JSON.stringify({success: true,message: 'Log in succeed!'}));
   }
   else 
@@ -23,7 +32,13 @@ router.post('/login', userController.verifyUser, (req, res) => {
 });
 
 ///////////////////////////////////////////// Do these have to be in a different router? ///////////////////////////////////////////// 
-router.post('/postitem', itemController.postItem, (req, res) => {
+
+router.get('/', itemController.getAllItems, (req, res) => {
+  res.status(200).json(res.locals.items)
+})
+
+
+router.post('/sell', itemController.postItem, (req, res) => {
   res.status(200).send('Item post succeeded!')
 })
 

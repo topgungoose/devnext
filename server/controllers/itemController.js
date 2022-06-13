@@ -2,12 +2,26 @@ const Item = require('../models/itemModels')
 
 const itemController = {}
 
+
+itemController.getAllItems = (req, res, next) => {
+    Item.find({}, (err, items) => {
+      // if a database error occurs, call next with the error message passed in
+      // for the express global error handler to catch
+      if (err) return next('Error in userController.getAllItems: ' + JSON.stringify(err));
+      
+      // store retrieved users into res.locals and move on to next middleware
+      res.locals.items = items;
+      return next();
+    });
+  };
+
 itemController.postItem = (req, res, next) => {
     const {name, price, details} = req.body
 
     Item.create({name, price, details})
         .then(newItem =>{
             console.log(newItem)
+            res.locals.newItem = newItem
             return next()
         })
         .catch(err => {
@@ -44,7 +58,7 @@ itemController.postItem = (req, res, next) => {
 // }
 
 itemController.updateItem = (req, res, next) => {
-    const {name, price, details} = req.body
+    const {name, price, details, url, type} = req.body
 
     Item.updateOne({name, price, details})
         .then(updatedItem => {

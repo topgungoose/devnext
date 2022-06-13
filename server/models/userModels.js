@@ -6,11 +6,14 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  products: [{title: String,
-    id: {
+  products: [{
       type: Schema.Types.ObjectId,
-      ref: 'item'
-    }}]
+      ref: 'Items'
+    }],
+  favs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Items'
+  }]
 });
 
 module.exports = mongoose.model('User', userSchema);
