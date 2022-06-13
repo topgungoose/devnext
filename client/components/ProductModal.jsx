@@ -10,10 +10,14 @@ export default function ProductModal({ handleClose }) {
   return (
     <div className='product-modal'>
       <div className='img-container'>
-        <img
-          className='imgModal'
-          src='https://ithemes.com/wp-content/uploads/2019/08/What-is-Your-Website-Design-Process-Blog-Post-Feature-Image-36119-01.png'
-        />
+        <div className='inside-image-container'>
+          <img
+            className='imgModal'
+            src='https://ithemes.com/wp-content/uploads/2019/08/What-is-Your-Website-Design-Process-Blog-Post-Feature-Image-36119-01.png'
+          />
+          <h1>Type: Service</h1>
+          <h1>Price: $99</h1>
+        </div>
         <div className='txt-container'>
           <h1>Let me build with you a website with HTML/CSS/Javascript</h1>
           <Avatar
