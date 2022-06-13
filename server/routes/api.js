@@ -1,46 +1,46 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 const itemController = require('../controllers/itemController');
+const checkoutController = require('../controllers/checkoutController');
 const router = express.Router();
-
 
 router.post('/signup', userController.createUser, (req, res) => {
   res.status(200).send('Sign up succeed!');
 });
 
-router.post('/sell/:id', itemController.postItem, userController.updateProductList, (req, res)=>{
-  res.status(200).json(res.locals);
-})
+router.post(
+  '/sell/:userId',
+  itemController.postItem,
+  userController.updateProductList,
+  (req, res) => {
+    res.status(200).json(res.locals);
+  }
+);
 
-router.post('/fav', userController.updateFavList, (req, res)=>{
+router.post('/fav', userController.updateFavList, (req, res) => {
   res.status(200).json(res.locals);
-})
+});
 
 router.post('/login', userController.verifyUser, (req, res) => {
-  res.setHeader("Content-Type","application/json");
+  res.setHeader('Content-Type', 'application/json');
   //if it is verified
-  if(res.locals.found)
-  {
-
-    res.status(200).send(JSON.stringify({success: true,message: 'Log in succeed!'}));
-  }
-  else 
-  {
+  if (res.locals.found) {
+    res.status(200).json({ success: true, message: 'Log in succeed!' });
+  } else {
     //res.status(404).send('Log in failed!');
-    res.status(404).send(JSON.stringify({success: false,message: 'Log in failed!'}));
+    res.status(404).json({ success: false, message: 'Log in failed!' });
   }
 });
 
-///////////////////////////////////////////// Do these have to be in a different router? ///////////////////////////////////////////// 
+///////////////////////////////////////////// Do these have to be in a different router? /////////////////////////////////////////////
 
 router.get('/', itemController.getAllItems, (req, res) => {
-  res.status(200).json(res.locals.items)
-})
-
+  res.status(200).json(res.locals.items);
+});
 
 router.post('/sell', itemController.postItem, (req, res) => {
-  res.status(200).send('Item post succeeded!')
-})
+  res.status(200).send('Item post succeeded!');
+});
 
 // still not working
 // router.post('findItem', itemController.findItem, (req, res) => {
@@ -52,7 +52,7 @@ router.post('/sell', itemController.postItem, (req, res) => {
 //   // {
 //   //   res.status(200).send(JSON.stringify({success: true,message: 'Found post!'}));
 //   // }
-//   // else 
+//   // else
 //   // {
 //   //   //res.status(404).send('Log in failed!');
 //   //   res.status(404).send(JSON.stringify({success: false,message: 'Could not find post'}));
@@ -60,8 +60,8 @@ router.post('/sell', itemController.postItem, (req, res) => {
 // })
 
 router.post('/updateItem', itemController.updateItem, (req, res) => {
-  res.status(200).send('Updated item!')
-})
+  res.status(200).send('Updated item!');
+});
 
 // Still not working
 // router.post('/deleteItem'), itemController.deleteItem, (req, res) => {
@@ -77,5 +77,11 @@ router.post('/updateItem', itemController.updateItem, (req, res) => {
 //   starWarsController.addCharacter,
 //   (req, res) => res.status(200).json(res.locals.oneCharacter)
 // );
+
+router.post(
+  '/checkout',
+  itemController.findItem,
+  checkoutController.createCheckoutSession
+);
 
 module.exports = router;

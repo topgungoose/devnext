@@ -1,36 +1,38 @@
-const Item = require('../models/itemModels')
+const Item = require('../models/itemModels');
 
-const itemController = {}
-
+const itemController = {};
 
 itemController.getAllItems = (req, res, next) => {
-    Item.find({}, (err, items) => {
-      // if a database error occurs, call next with the error message passed in
-      // for the express global error handler to catch
-      if (err) return next('Error in userController.getAllItems: ' + JSON.stringify(err));
-      
-      // store retrieved users into res.locals and move on to next middleware
-      res.locals.items = items;
-      return next();
-    });
-  };
+  Item.find({}, (err, items) => {
+    // if a database error occurs, call next with the error message passed in
+    // for the express global error handler to catch
+    if (err)
+      return next(
+        'Error in userController.getAllItems: ' + JSON.stringify(err)
+      );
+
+    // store retrieved users into res.locals and move on to next middleware
+    res.locals.items = items;
+    return next();
+  });
+};
 
 itemController.postItem = (req, res, next) => {
-    const {name, price, details} = req.body
+  const { name, price, details } = req.body;
 
-    Item.create({name, price, details})
-        .then(newItem =>{
-            console.log(newItem)
-            res.locals.newItem = newItem
-            return next()
-        })
-        .catch(err => {
-            next({
-                log: `itemController.postItem: ERROR: ${err}`,
-                err:  {err: 'Error occured in itemController.postItem'}
-            })
-        })
-}
+  Item.create({ name, price, details })
+    .then((newItem) => {
+      console.log(newItem);
+      res.locals.newItem = newItem;
+      return next();
+    })
+    .catch((err) => {
+      next({
+        log: `itemController.postItem: ERROR: ${err}`,
+        err: { err: 'Error occurred in itemController.postItem' },
+      });
+    });
+};
 
 // itemController.findItem = (req, res, next) => {
 //     const { name, price, details } = req.body
@@ -41,37 +43,55 @@ itemController.postItem = (req, res, next) => {
 //             res.locals.succsess = true
 //             return next()
 //             // if (foundItem.length === 0) {
-                
+
 //             // }
 //             // else {
 //             //     res.locals.success = false
 //             //     return next()
 //             // }
-            
+
 //         })
 //         .catch(err => {
 //             next({
 //                 log: `itemController.findItem: ERROR: ${err}`,
-//                 err:  {err: 'Error occured in itemController.findItem'}
+//                 err:  {err: 'Error occurred in itemController.findItem'}
 //             })
 //         })
 // }
 
-itemController.updateItem = (req, res, next) => {
-    const {name, price, details, url, type} = req.body
+itemController.findItem = (req, res, next) => {
+  const { itemId } = req.body;
+  console.log(itemId);
+  Item.findById(itemId)
+    .exec()
+    .then((foundItem) => {
+      //   console.log(foundItem);
+      res.locals.foundItem = foundItem;
+      next();
+    })
+    .catch((err) => {
+      next({
+        log: `itemController.findItem: ERROR: ${err}`,
+        err: { err: 'Error occurred in itemController.findItem' },
+      });
+    });
+};
 
-    Item.updateOne({name, price, details})
-        .then(updatedItem => {
-            console.log(updatedItem)
-            return next()
-        })
-        .catch(err => {
-            next({
-                log: `itemController.updateItem: ERROR: ${err}`,
-                err:  {err: 'Error occured in itemController.updateItem'}
-            })
-        })
-}
+itemController.updateItem = (req, res, next) => {
+  const { name, price, details, url, type } = req.body;
+
+  Item.updateOne({ name, price, details, url, type })
+    .then((updatedItem) => {
+      console.log(updatedItem);
+      return next();
+    })
+    .catch((err) => {
+      next({
+        log: `itemController.updateItem: ERROR: ${err}`,
+        err: { err: 'Error occurred in itemController.updateItem' },
+      });
+    });
+};
 
 // itemController.deleteItem = (req, res, next) => {
 //     const {name} = req.body
@@ -83,10 +103,9 @@ itemController.updateItem = (req, res, next) => {
 //         .catch(err => {
 //             next({
 //                 log: `itemController.deleteItem: ERROR: ${err}`,
-//                 err:  {err: 'Error occured in itemController.deleteItem'}
+//                 err:  {err: 'Error occurred in itemController.deleteItem'}
 //             })
 //         })
 // }
 
-
-module.exports = itemController
+module.exports = itemController;
