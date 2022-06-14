@@ -7,7 +7,7 @@ export default [
     price: 9386,
     userName: 'severley0',
     _id: { $oid: '62a6cbadfc13ae6752000000' },
-    type: false,
+    type: 'false',
   },
   {
     name: 'It',
