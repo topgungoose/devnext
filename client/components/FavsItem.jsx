@@ -5,25 +5,20 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { red } from '@mui/material/colors';
 
-export default function ProductItem({
-  name,
-  price,
-  url,
-  type,
-  handleOpen,
-  setItem,
-}) {
-  const handleClick = () => {
-    setItem();
-    handleOpen();
-  };
-  console.log(handleOpen);
-  console.log(setItem);
-
+export default function FavsItem({ handleOpen, favs }) {
   return (
-    <Card onClick={handleClick} sx={{ maxWidth: 345, position: 'relative' }}>
-      <CardMedia component='img' height='194' image={url} alt={name} />
+    <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
+      <CardMedia
+        component='img'
+        height='194'
+        image='https://intl-blog.imgix.net/wp-content/uploads/2021/10/what-is-software-CA-Capterra-Header.png?auto=format%2Cenhance'
+        alt='Product Placeholder'
+      />
       <CardContent>
         <Stack
           direction='row'
@@ -32,10 +27,10 @@ export default function ProductItem({
           spacing={0}
         >
           <Typography variant='subtitle1' color='text.primary'>
-            {name}
+            Product Name
           </Typography>
           <Typography variant='subtitle2' color='text.secondary'>
-            ${price}
+            Placeholder
           </Typography>
         </Stack>
         <Chip
@@ -44,12 +39,15 @@ export default function ProductItem({
             top: 0,
             left: 0,
             margin: 1,
-            backgroundColor: type === 'Product' ? '#d9ed92' : '#caf0f8',
+            backgroundColor: '#d9ed92',
           }}
           size='small'
-          label={type === 'Product' ? 'Product' : 'Service'}
+          label='Product'
         />
       </CardContent>
+      <IconButton aria-label='share'>
+        <DeleteIcon sx={{ fontSize: 25 }} />
+      </IconButton>
     </Card>
   );
 }

@@ -1,0 +1,25 @@
+.product-modal {
+  margin: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inside-image-container {
+}
+
+.img-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.txt-container {
+  margin: 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imgModal {
+  max-width: 400px;
+  max-height: 500px;
+}

@@ -15,7 +15,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-
+import cover from '../assets/vector/default-monochrome-white.svg';
+import TextField from '@mui/material/TextField';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -61,6 +62,8 @@ export default function Navbar({
   handleDrawerOpen,
   drawerWidth,
   setCurrent,
+  searchInput,
+  setSearchInput,
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -171,7 +174,7 @@ export default function Navbar({
   return (
     // <Box sx={{ flexGrow: 1 }}>
     <>
-      <AppBar open={open} sx={{ backgroundColor: '#57cc99' }} position='fixed'>
+      <AppBar open={open} sx={{ backgroundColor: '#485CC7' }} position='fixed'>
         <Toolbar>
           <IconButton
             size='large'
@@ -184,15 +187,7 @@ export default function Navbar({
             <MenuIcon />
           </IconButton>
 
-          <StorefrontIcon />
-          <Typography
-            variant='h6'
-            noWrap
-            component='div'
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            DevNext
-          </Typography>
+          <img style={{ width: '175px' }} src={cover} />
 
           <Search>
             <SearchIconWrapper>
@@ -200,7 +195,10 @@ export default function Navbar({
             </SearchIconWrapper>
             <StyledInputBase
               placeholder='Search…'
+              //   onFocus={() => console.log('onFocus')}
+              value={searchInput}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setSearchInput(() => e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
