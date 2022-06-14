@@ -7,7 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import Post from './Post';
 import ProductModal from './ProductModal';
 
-export default function Home({ itemData }) {
+export default function Home({ itemData, reset, userId, username }) {
   const [openPost, setOpenPost] = useState(false);
   const [openItem, setOpenItem] = useState(false);
   const [currentItemDetails, setCurrentItemDetails] = useState(null);
@@ -21,7 +21,11 @@ export default function Home({ itemData }) {
   return (
     <div className='home'>
       <div className='container'>
-        <ProductContainer handleOpen={handleOpenItem} itemData={itemData} />
+        <ProductContainer
+          setCurrentItemDetails={setCurrentItemDetails}
+          handleOpen={handleOpenItem}
+          itemData={itemData}
+        />
       </div>
       <Fab
         color='primary'
@@ -32,10 +36,20 @@ export default function Home({ itemData }) {
         <AddIcon />
       </Fab>
       <Dialog fullWidth open={openPost} maxWidth='sm'>
-        <Post handleClose={handleClosePost} />
+        <Post
+          id={userId}
+          username={username}
+          handleClose={() => {
+            handleClosePost();
+            reset();
+          }}
+        />
       </Dialog>
       <Dialog fullWidth open={openItem} maxWidth='lg'>
-        <ProductModal handleClose={handleCloseItem} />
+        <ProductModal
+          currentItemDetails={currentItemDetails}
+          handleClose={handleCloseItem}
+        />
       </Dialog>
     </div>
   );

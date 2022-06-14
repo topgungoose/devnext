@@ -2,7 +2,12 @@ import * as React from 'react';
 import ProductItem from './ProductItem';
 import Grid from '@mui/material/Grid';
 
-export default function ProductContainer({ handleOpen, itemData }) {
+export default function ProductContainer({
+  handleOpen,
+  itemData,
+  setCurrentItemDetails,
+}) {
+  console.log('FRom PC ', typeof setCurrentItemDetails);
   return (
     <Grid
       container
@@ -21,6 +26,9 @@ export default function ProductContainer({ handleOpen, itemData }) {
               id={_id}
               username={username}
               handleOpen={handleOpen}
+              setItem={() => {
+                setCurrentItemDetails({ name, price, url, details, type, _id });
+              }}
             />
           </Grid>
         )

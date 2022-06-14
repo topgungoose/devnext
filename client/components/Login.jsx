@@ -25,6 +25,7 @@ export default function Login() {
     width: 600,
     margin: '20px auto',
   };
+
   const avatarStyle = { backgroundColor: '#FF6F61' };
   const btnStyle = { margin: '8px 0' };
 
@@ -44,7 +45,8 @@ export default function Login() {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            navigate('/home');
+            console.log(data.data);
+            navigate('/home', { state: data.data });
           } else {
             alert(data.message);
             setState({ ...state, password: '' });

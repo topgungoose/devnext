@@ -8,7 +8,7 @@ checkoutController.createCheckoutSession = async (req, res) => {
   try {
     const { foundItem } = res.locals;
     console.log(foundItem);
-    // const price_in_cents = foundItem.price * 100;
+    const price_in_rupees = foundItem.price * 100;
     // console.log('price_in_cents', price_in_cents);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -19,13 +19,13 @@ checkoutController.createCheckoutSession = async (req, res) => {
             product_data: {
               name: foundItem.name,
             },
-            unit_amount: foundItem.price,
+            unit_amount: price_in_rupees,
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:8080/home',
+      success_url: 'http://localhost:8080/success',
       cancel_url: 'http://localhost:8080/signup',
     });
     console.log(session.url);
