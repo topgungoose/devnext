@@ -10,13 +10,19 @@ export default function ProductItem({
   name,
   price,
   url,
-  details,
   type,
-  _id,
   handleOpen,
+  setItem,
 }) {
+  const handleClick = () => {
+    setItem();
+    handleOpen();
+  };
+  console.log(handleOpen);
+  console.log(setItem);
+
   return (
-    <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
+    <Card onClick={handleClick} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia component='img' height='194' image={url} alt={name} />
       <CardContent>
         <Stack
@@ -38,10 +44,10 @@ export default function ProductItem({
             top: 0,
             left: 0,
             margin: 1,
-            backgroundColor: type === 'false' ? '#d9ed92' : '#caf0f8',
+            backgroundColor: type === 'Product' ? '#d9ed92' : '#caf0f8',
           }}
           size='small'
-          label={type === 'false' ? 'Product' : 'Service'}
+          label={type === 'Product' ? 'Product' : 'Service'}
         />
       </CardContent>
     </Card>

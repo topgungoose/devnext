@@ -31,6 +31,7 @@ export default function Login() {
     width: 600,
     margin: '20px auto',
   };
+
   const avatarStyle = { backgroundColor: '#FF6F61' };
   const btnStyle = { margin: '8px 0' };
   // ***********************************************

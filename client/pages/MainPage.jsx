@@ -2,7 +2,7 @@
 import Navbar from '../components/Navbar';
 import Anchor from '../components/Anchor';
 import Home from '../components/Home';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -55,13 +55,15 @@ export default function MainPage() {
 
   const [searchInput, setSearchInput] = useState('');
 
-  // const [itemData, setItemData] = useState(MOCK_DATA);
+  const [itemData, setItemData] = useState([]);
 
   const [current, setCurrent] = useState('home');
 
-  const itemData = MOCK_DATA.filter(({ name }) =>
-    name.toLowerCase().includes(searchInput)
+  const filteredItemData = itemData.filter(({ name }) =>
+    name.toLowerCase().includes(searchInput.toLocaleLowerCase())
   );
+  //                                        coming from Login.jsx
+  const [userData, setUserData] = useState(useLocation().state.data);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -71,12 +73,33 @@ export default function MainPage() {
     setOpen(false);
   };
 
+  const reset = () => {
+    console.log('reseting!');
+    fetch('/api/user')
+      .then((res) => res.json())
+      .then((data) => {
+        setItemData(data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  useEffect(() => {
+    reset();
+  }, []);
+
   let currentElement;
 
   if (current === 'home') {
-    currentElement = <Home itemData={itemData} />;
+    currentElement = (
+      <Home
+        itemData={filteredItemData}
+        reset={reset}
+        userId={userData._id}
+        username={userData.username}
+      />
+    );
   } else if (current === 'favs') {
-    currentElement = <Favs />;
+    currentElement = <Favs favs={userData.favs} />;
   }
 
   return (
@@ -108,9 +131,11 @@ export default function MainPage() {
       >
         <DrawerHeader>
           <Stack direction='row' sx={{ alignItems: 'center' }} spacing={1}>
-            <Avatar sx={{ backgroundColor: '#9FAEE5' }}>S</Avatar>
+            <Avatar sx={{ backgroundColor: '#9FAEE5' }}>
+              {userData.username[0]}
+            </Avatar>
             <Typography variant='h5' component='p'>
-              Satty
+              {userData.username}
             </Typography>
           </Stack>
 

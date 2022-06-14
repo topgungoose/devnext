@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red } from '@mui/material/colors';
 
-export default function FavsItem({ handleOpen }) {
+export default function FavsItem({ handleOpen, favs }) {
   return (
     <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia
@@ -45,9 +45,9 @@ export default function FavsItem({ handleOpen }) {
           label='Product'
         />
       </CardContent>
-        <IconButton aria-label="share">
-          <DeleteIcon sx={{fontSize: 25  }}/>
-        </IconButton>
+      <IconButton aria-label='share'>
+        <DeleteIcon sx={{ fontSize: 25 }} />
+      </IconButton>
     </Card>
   );
 }

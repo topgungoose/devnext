@@ -1,7 +1,7 @@
 // TODO: Refactor the entire Controller to Async/Await
 
 const User = require('../models/userModels');
-
+const Item = require('../models/itemModels'); // used this in the getProdsAndFavs
 const userController = {};
 
 /**
@@ -60,10 +60,10 @@ userController.verifyUser = (req, res, next) => {
   console.log(req.body);
   User.find({ username: username, password: password })
     .then((doc) => {
-      console.log('this is doc', doc);
-      if (doc.length === 0) res.locals.found = false;
+      // console.log('this is doc', doc);
+      if (doc.length === 0) res.locals.data = false;
       else {
-        res.locals.found = true;
+        res.locals.data = doc[0];
       }
       next();
     })
@@ -111,6 +111,38 @@ userController.updateFavList = (req, res, next) => {
       });
     });
 };
+
+// userController.getProdsAndFavs = async (req, res, next) => {
+//   try {
+//     const { products, favs } = res.locals.data;
+//     const productItems = await products.map(async (id) => {
+//       try {
+//         const foundItem = await Item.findById(id);
+//         // console.log(foundItem);
+//         return foundItem;
+//       } catch (err) {
+//         return next(err);
+//       }
+//     });
+
+//     const favItems = await favs.map(async (id) => {
+//       try {
+//         const foundItem = await Item.findById(id);
+//         // console.log(foundItem);
+//         return foundItem;
+//       } catch (err) {
+//         return next(err);
+//       }
+//     });
+
+//     res.locals.productItems = productItems;
+//     res.locals.favItems = favItems;
+//     console.log(res.locals);
+//     return next();
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 // user.getAllItems()   api/items/getAll
 
 module.exports = userController;

@@ -21,16 +21,25 @@ router.post('/fav', userController.updateFavList, (req, res) => {
   res.status(200).json(res.locals);
 });
 
-router.post('/login', userController.verifyUser, (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  //if it is verified
-  if (res.locals.found) {
-    res.status(200).json({ success: true, message: 'Log in succeed!' });
-  } else {
-    //res.status(404).send('Log in failed!');
-    res.status(404).json({ success: false, message: 'Log in failed!' });
+router.post(
+  '/login',
+  userController.verifyUser,
+  // userController.getProdsAndFavs,
+  (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    //if it is verified
+    if (res.locals.data) {
+      res.status(200).json({
+        success: true,
+        message: 'Log in succeed!',
+        data: res.locals,
+      });
+    } else {
+      //res.status(404).send('Log in failed!');
+      res.status(404).json({ success: false, message: 'Log in failed!' });
+    }
   }
-});
+);
 
 ///////////////////////////////////////////// Do these have to be in a different router? /////////////////////////////////////////////
 
@@ -38,9 +47,9 @@ router.get('/', itemController.getAllItems, (req, res) => {
   res.status(200).json(res.locals.items);
 });
 
-router.post('/sell', itemController.postItem, (req, res) => {
-  res.status(200).send('Item post succeeded!');
-});
+// router.post('/sell', itemController.postItem, (req, res) => {
+//   res.status(200).send('Item post succeeded!');
+// });
 
 // still not working
 // router.post('findItem', itemController.findItem, (req, res) => {

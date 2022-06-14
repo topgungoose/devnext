@@ -18,9 +18,9 @@ itemController.getAllItems = (req, res, next) => {
 };
 
 itemController.postItem = (req, res, next) => {
-  const { name, price, details, type, url } = req.body;
+  const { name, price, details, url, type, username } = req.body;
 
-  Item.create({ name, price, details, type, url })
+  Item.create({ name, price, details, url, type, username })
     .then((newItem) => {
       console.log(newItem);
       res.locals.newItem = newItem;
