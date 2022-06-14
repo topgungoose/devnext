@@ -1,3 +1,5 @@
+// TODO: Refactor the entire Controller to Async/Await
+
 const User = require('../models/userModels');
 
 const userController = {};
