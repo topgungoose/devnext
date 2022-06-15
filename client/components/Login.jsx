@@ -2,16 +2,19 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { Avatar, Typography } from '@mui/material';
+import { 
+  Paper,
+  Grid,
+  Avatar,
+  Typography,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  TextField,
+  Button,
+  Link
+} from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import cover from '../assets/cover.png';
 
 /**
