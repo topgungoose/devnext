@@ -67,7 +67,7 @@ export default function MainPage() {
     name.toLowerCase().includes(searchInput.toLocaleLowerCase())
   );
   //                              useLocation coming from Login.jsx
-  const [userData, setUserData] = useState(useLocation().state.data); // {username,pas,fav, products, _id} -- TODO: Potential for cleanup
+  const [userData, setUserData] = useState(useLocation().state.data); // {username,pas,fav, products, _id} -- TODO: Potential for cleanup, shouldn't pass password
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -77,7 +77,7 @@ export default function MainPage() {
     setOpen(false);
   };
 
-  // TODO: Rename "reset" -- It gets user data
+  // TODO: Rename "reset" -- It gets user data, handleItemDataList
   const reset = () => {
     console.log('reseting!');
     fetch('/api/user')
@@ -97,7 +97,7 @@ export default function MainPage() {
   if (current === 'home') {
     currentElement = (
       <Home
-        itemData={filteredItemData} // TODO: to be renamed
+        itemData={filteredItemData} // TODO: to be renamed / State itemData and props itemData are unrelated
         reset={reset}
         userId={userData._id}
         username={userData.username}
