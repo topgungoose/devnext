@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const cors = require('cors');
+// const cors = require('cors');
 const apiRouter = require('./routes/api');
 
 require('dotenv').config();
@@ -23,7 +23,7 @@ mongoose.connection.once('open', () => {
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

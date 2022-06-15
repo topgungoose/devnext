@@ -1,23 +1,29 @@
 // TODO: Remove some of the boilerplate that serves no purpose
 import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import MuiAppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import StorefrontIcon from '@mui/icons-material/Storefront';
+import {
+  AppBar as MuiAppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  MenuItem,
+  Menu,
+  TextField,
+} from '@mui/material/';
+
+import {
+  Menu as MenuIcon,
+  Search as SearchIcon,
+  AccountCircle,
+  MoreVert as MoreIcon,
+  Favorite as FavoriteIcon,
+  Storefront as StorefrontIcon,
+} from '@mui/icons-material';
+
 import cover from '../assets/vector/default-monochrome-white.svg';
-import TextField from '@mui/material/TextField';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,7 +66,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar({
-  open,
+  openDrawer,
   handleDrawerOpen,
   drawerWidth,
   setCurrent,
@@ -176,7 +182,11 @@ export default function Navbar({
   return (
     // <Box sx={{ flexGrow: 1 }}>
     <>
-      <AppBar open={open} sx={{ backgroundColor: '#485CC7' }} position='fixed'>
+      <AppBar
+        open={openDrawer}
+        sx={{ backgroundColor: '#485CC7' }}
+        position='fixed'
+      >
         <Toolbar>
           <IconButton
             size='large'
@@ -184,7 +194,7 @@ export default function Navbar({
             color='inherit'
             aria-label='open drawer'
             onClick={handleDrawerOpen}
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2, ...(openDrawer && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
