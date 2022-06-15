@@ -10,13 +10,14 @@ import ProductModal from './ProductModal';
 export default function Home({ itemData, reset, userId, username }) {
   const [openPost, setOpenPost] = useState(false);
   const [openItem, setOpenItem] = useState(false);
-  const [currentItemDetails, setCurrentItemDetails] = useState(null);
+  const [currentItemDetails, setCurrentItemDetails] = useState(null); //describes what needs to be rendered inside of productModal component
 
+  // TODO: the states can be refactored
+  const handleOpenPost = () => setOpenPost(true);
   const handleClosePost = () => setOpenPost(false);
-  const handleCloseItem = () => setOpenItem(false);
 
   const handleOpenItem = () => setOpenItem(true);
-  const handleOpenPost = () => setOpenPost(true);
+  const handleCloseItem = () => setOpenItem(false);
 
   return (
     <div className='home'>
@@ -27,7 +28,7 @@ export default function Home({ itemData, reset, userId, username }) {
           itemData={itemData}
         />
       </div>
-      <Fab
+      <Fab // blue add button
         color='primary'
         sx={{ position: 'absolute', top: 0, right: 0, marginBlock: 1 }}
         aria-label='add'
@@ -36,6 +37,7 @@ export default function Home({ itemData, reset, userId, username }) {
         <AddIcon />
       </Fab>
       <Dialog fullWidth open={openPost} maxWidth='sm'>
+        {/* doesn't render until // you click on blue button */}
         <Post
           id={userId}
           username={username}
@@ -44,7 +46,8 @@ export default function Home({ itemData, reset, userId, username }) {
             reset();
           }}
         />
-      </Dialog>
+      </Dialog>{' '}
+      {/* doesn't render until you click on product item */}
       <Dialog fullWidth open={openItem} maxWidth='lg'>
         <ProductModal
           currentItemDetails={currentItemDetails}
