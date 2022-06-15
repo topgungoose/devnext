@@ -1,51 +1,31 @@
+// TODO: Add MONGOURI to .env and statically serve the build/bundle.js file when it is time for production.
+
+require('dotenv').config(); //Allows usage of stored sensitive information, MongoDB connection URI and StripeAPI key.
+const mongoose = require('mongoose'); 
 const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
+
+// Router to handle all application requests to user events, item events, checkout
+const apiRouter = require('./routes/api'); 
+
 const cors = require('cors');
-const apiRouter = require('./routes/api');
-
-require('dotenv').config();
-
-mongoose.connect(
-  process.env.NODE_ENV === 'test'
-    ? process.env.MONGOURI_TEST // mongoURI test
-    : process.env.MONGOURI, // production url
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-
-mongoose.connection.once('open', () => {
-  console.log(`Connected to ${process.env.NODE_ENV} Database 🥳`);
-});
-
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// MAY OR MAY NOT NEED
-// app.use(express.urlencoded());
-// app.use('/client', express.static(path.resolve(__dirname, '../client')));
+app.use(cors()); // Enables all CORS requests
+app.use(express.json()); // Parses incoming requests with a json body
+app.use(express.urlencoded({ extended: true })); //Parses incoming requests with urlencoded payloads 
 
+// Reroute any request to /api/user to the Router where it will handle further endpoints
 app.use('/api/user', apiRouter);
 
-// app.use('/');
-app.get('/api', (req, res) => {
-  res.status(200).json('Hello World from Server!');
-});
 
-// app.use('/', (req, res) => {
-//   res.redirect(200, 'http://localhost:8080/signup');
-// });
-
+// Catch-all error handling to any route not defined.
 app.use('*', (req, res) => {
   res.sendStatus(404);
 });
 
+// Global error handler, any middleware function passing next(err) will follow this structure.
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
@@ -57,8 +37,23 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
+// Confirmation in terminal that the server is started.
 app.listen(PORT, () => {
   console.log(`listening to PORT: ${PORT}`);
 });
 
-module.exports = app;
+// Connect to either production or dev database based off of how application is spun up, npm start or npm run dev.
+mongoose.connect(
+  process.env.NODE_ENV === 'test'
+    ? process.env.MONGOURI_TEST 
+    : process.env.MONGOURI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+// Confirmation in terminal on application spin up that a connection to the database is set up.
+mongoose.connection.once('open', () => {
+  console.log(`Connected to ${process.env.NODE_ENV} Database 🥳`);
+});
