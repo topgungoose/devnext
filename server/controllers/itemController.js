@@ -59,22 +59,19 @@ itemController.postItem = (req, res, next) => {
 //         })
 // }
 
-itemController.findItem = (req, res, next) => {
-  const { itemId } = req.body;
-  console.log(itemId);
-  Item.findById(itemId)
-    .exec()
-    .then((foundItem) => {
-      //   console.log(foundItem);
-      res.locals.foundItem = foundItem;
-      next();
-    })
-    .catch((err) => {
-      next({
-        log: `itemController.findItem: ERROR: ${err}`,
-        err: { err: 'Error occurred in itemController.findItem' },
-      });
+itemController.findItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.body;
+    console.log(itemId);
+    await Item.findById(itemId).exec();
+    res.locals.foundItem = foundItem;
+    next();
+  } catch (err) {
+    next({
+      log: `itemController.findItem: ERROR: ${err}`,
+      err: { err: 'Error occurred in itemController.findItem' },
     });
+  }
 };
 
 itemController.updateItem = (req, res, next) => {

@@ -207,7 +207,6 @@ export default function Navbar({
             </SearchIconWrapper>
             <StyledInputBase
               placeholder='Search…'
-              //   onFocus={() => console.log('onFocus')}
               value={searchInput}
               inputProps={{ 'aria-label': 'search' }}
               onChange={(e) => setSearchInput(() => e.target.value)}

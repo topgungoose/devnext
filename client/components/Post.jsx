@@ -1,31 +1,35 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 
+/** MUI Components */
+import {
+  Box,
+  TextField,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Stack,
+  Button,
+  OutlinedInput,
+  InputAdornment,
+} from '@mui/material';
+
+/** Styles */
 import '../styles/Post.css';
 
 export default function Post({ handleClose, id, username }) {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(''); //
   const [price, setPrice] = useState(0);
   const [details, setDetails] = useState('');
   const [url, setUrl] = useState('');
   const [type, setType] = useState('');
 
-  console.log(name, price, details, url, type);
-  // MAKE SEPARATE HANDLE CHANGE FOR SELECT TYPE
-  console.log(id);
-  function handleSubmit(event) {
+  /**
+   * - Posts
+   */
+  function handleSubmit() {
     // This preventDefault wont re-render our page with default values before we submit
     // event.preventDefault();
-
     const postState = { name, price, details, url, type, username };
     fetch(`api/user/sell/:${id}`, {
       method: 'POST',

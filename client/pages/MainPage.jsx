@@ -70,7 +70,7 @@ export default function MainPage() {
   const [current, setCurrent] = useState('home'); // determines current area by endpoint
 
   /**
-   * Filters itemData from name
+   * - Filters itemData from name
    * @type {Array}
    */
   const filteredItemData = itemData.filter(({ name }) =>
@@ -78,37 +78,26 @@ export default function MainPage() {
   );
 
   /**
-   * @typedef userData
    * @type {object}
    * @property {string} _id - user's ID.
    * @property {string} username - user's username.
    * @property {string} password - user's password.
    * @property {Array} products - Array of posted products items.
    * @property {Array} favs -  Array of favorite items.
-   *
-   */
-  /**
-   * @type {userData} userData
    */
   const userData = useLocation().state.data;
 
-  /**
-   * Opens Drawer Component
-   */
+  /** - Opens Drawer Component */
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };
 
-  /**
-   * Closes Drawer Component
-   */
+  /** - Closes Drawer Component */
   const handleDrawerClose = () => {
     setOpenDrawer(false);
   };
 
-  /**
-   * Fetches all Item Data from server and sets it to 'itemData' state
-   */
+  /** - Fetches all Item Data from server and sets it to 'itemData' state */
   const getItems = () => {
     fetch('/api/user')
       .then((res) => res.json())
@@ -118,18 +107,15 @@ export default function MainPage() {
       .catch((err) => console.log(err.message));
   };
 
-  /**
-   * Sets the 'itemData' state when the MainPage gets mounted
-   */
+  /** - Sets the 'itemData' state when the MainPage gets mounted */
   useEffect(() => {
     getItems();
   }, []);
 
-  /**
-   * @type {React.Component}
-   */
+  /** @type {React.Component} */
   let currentElement;
-  // Sets currentElement to the component to be rendered depending of the value of the variable "current"
+
+  /** Sets currentElement to the component to be rendered depending of the value of the  "current" state */
   if (current === 'home') {
     currentElement = (
       <Home
