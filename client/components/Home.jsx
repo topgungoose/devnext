@@ -15,7 +15,7 @@ import '../styles/Home.css';
 export default function Home({ itemData, reset, userId, username }) {
   const [openPost, setOpenPost] = useState(false);
   const [openItem, setOpenItem] = useState(false); // true
-  const [currentItemDetails, setCurrentItemDetails] = useState(null); //describes what needs to be rendered inside of productModal component { name, url, details, price, type, id}
+  const [currentItemDetails, setCurrentItemDetails] = useState(null); //describes what needs to be rendered inside of productModal component { name, url, details, price, type, id, username }
 
   // TODO: the states can be refactored
   const handleOpenPost = () => setOpenPost(true);

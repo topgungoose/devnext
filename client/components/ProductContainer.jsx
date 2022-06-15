@@ -25,7 +25,6 @@ export default function ProductContainer({
             name={name}
             price={price}
             url={url}
-            details={details}
             type={type}
             id={_id}
             username={username}

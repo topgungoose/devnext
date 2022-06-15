@@ -1,17 +1,15 @@
 // TODO: Remove some of the boilerplate that serves no purpose
 import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+
 import {
   AppBar as MuiAppBar,
   Box,
   Toolbar,
   IconButton,
-  Typography,
   InputBase,
   Badge,
   MenuItem,
   Menu,
-  TextField,
 } from '@mui/material/';
 
 import {
@@ -22,6 +20,8 @@ import {
   Favorite as FavoriteIcon,
   Storefront as StorefrontIcon,
 } from '@mui/icons-material';
+
+import { styled, alpha } from '@mui/material/styles';
 
 import cover from '../assets/vector/default-monochrome-white.svg';
 
