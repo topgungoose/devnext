@@ -17,8 +17,8 @@ import {
 /** Styles */
 import '../styles/Post.css';
 
-export default function Post({ handleClose, id, username }) {
-  const [name, setName] = useState(''); //
+export default function Post({ handleClose, id, username, reset }) {
+  const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [details, setDetails] = useState('');
   const [url, setUrl] = useState('');
@@ -41,6 +41,7 @@ export default function Post({ handleClose, id, username }) {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success', data);
+        reset();
       })
       .catch((err) => {
         console.error('Error:', err);
