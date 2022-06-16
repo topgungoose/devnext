@@ -151,7 +151,8 @@ export default function MainPage() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#9FAEE5',
+            backgroundColor: '#485CC7',
+            color: 'white',
           },
         }}
         variant='persistent'

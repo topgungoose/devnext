@@ -135,7 +135,7 @@ export default function Login() {
             <Link href='#'>Forgot Password?</Link>
           </Typography>
           <Typography>
-            Don't have an account?
+            Don't have an account?{' '}
             <Link href='#'>Sign Up</Link>
           </Typography>
         </Paper>
