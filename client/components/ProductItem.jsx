@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Card, CardMedia, CardContent, Typography, Chip, Stack } from '@mui/material';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Chip,
+  Stack,
+} from '@mui/material';
 
 /**
  * ProductItem - Returns Card component which contains all card details
  * @param {object} State
- * @returns {component} Card component
+ * @returns {React.component} Card component
  */
 export default function ProductItem({
   name,
@@ -14,6 +21,7 @@ export default function ProductItem({
   handleOpen,
   setItem,
 }) {
+  /** - Set item detail's for Product Modal and opens it  */
   const handleClick = () => {
     setItem();
     handleOpen();

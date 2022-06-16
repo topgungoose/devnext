@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Chip,
+  Stack,
+  IconButton,
+} from '@mui/material';
+
+import {
+  Favorite as FavoriteIcon,
+  Delete as DeleteIcon,
+} from '@mui/icons-material';
 import { red } from '@mui/material/colors';
 
-export default function FavsItem({ handleOpen, favs }) {
+/**
+ * @represents Entire Product Item within the favorites list
+ * @returns {component} FavsItem
+ */
+export default function FavsItem({ handleOpen, id }) {
   return (
     <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia

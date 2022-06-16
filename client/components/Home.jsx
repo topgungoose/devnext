@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import ProductContainer from './ProductContainer';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import '../styles/Home.css';
-import Dialog from '@mui/material/Dialog';
 import Post from './Post';
 import ProductModal from './ProductModal';
+import ProductContainer from './ProductContainer';
+import { Fab, Dialog } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import '../styles/Home.css';
+
+/**
+ * Home
+ * @Represents main container of website
+ * @returns {component} Home Component
+ */
 
 export default function Home({ itemData, reset, userId, username }) {
   const [openPost, setOpenPost] = useState(false);
   const [openItem, setOpenItem] = useState(false); // true
-  const [currentItemDetails, setCurrentItemDetails] = useState(null); //describes what needs to be rendered inside of productModal component { name, url, details, price, type, id}
+  const [currentItemDetails, setCurrentItemDetails] = useState(null); //describes what needs to be rendered inside of productModal component { name, url, details, price, type, id, username }
 
   // TODO: the states can be refactored
   const handleOpenPost = () => setOpenPost(true);
@@ -26,6 +31,7 @@ export default function Home({ itemData, reset, userId, username }) {
           setCurrentItemDetails={setCurrentItemDetails}
           handleOpen={handleOpenItem}
           itemData={itemData}
+          username={username}
         />
       </div>
       <Fab // blue add button
@@ -41,12 +47,10 @@ export default function Home({ itemData, reset, userId, username }) {
         <Post
           id={userId}
           username={username}
-          handleClose={() => {
-            handleClosePost();
-            reset();
-          }}
+          handleClose={handleClosePost}
+          reset={() => reset()}
         />
-      </Dialog>{' '}
+      </Dialog>
       {/* doesn't render until you click on product item */}
       <Dialog fullWidth open={openItem} maxWidth='lg'>
         <ProductModal

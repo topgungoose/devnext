@@ -20,4 +20,12 @@ const userSchema = new Schema({
   ],
 });
 
-module.exports = mongoose.model('User', userSchema);
+/**
+ * @desc User document model, can query the User collection and use mongoose CRUD methods
+ */
+const userModel = mongoose.model('User', userSchema);
+
+module.exports = userModel;
+
+// Each User Model in the User Collection is based off of the schema:
+// {username, password, products, favs}
