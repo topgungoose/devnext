@@ -1,10 +1,10 @@
 import React from 'react';
-import { Stack, Button, Avatar, IconButton } from '@mui/material'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import { red } from '@mui/material/colors';
-import '../styles/ProductModal.css';
 
+import { Stack, Button, Avatar, IconButton } from '@mui/material';
+
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+
+import '../styles/ProductModal.css';
 
 /**
  * ProductModal - Returns popup containing product details (name, price, type)
@@ -51,11 +51,9 @@ export default function ProductModal({ currentItemDetails, handleClose }) {
         </div>
         <div className='txt-container'>
           <h1>{name}</h1>
-          <Avatar
-            alt='Tony Stark'
-            src='https://dailysuperheroes.com/wp-content/uploads/2020/02/tony-stark.jpg'
-            sx={{ width: 56, height: 56 }}
-          />
+          <Avatar sx={{ width: 56, height: 56, backgroundColor: '#9FAEE5' }}>
+            {username[0]}
+          </Avatar>
           By {username}
           <p>{details}</p>
         </div>
@@ -67,11 +65,6 @@ export default function ProductModal({ currentItemDetails, handleClose }) {
           spacing={2}
         >
           <IconButton>
-            {/* <FavoriteIcon
-              sx={{ color: red[500], fontSize: 50 }}
-              onClick={handleClose}
-            /> */}
-
             <FavoriteBorderOutlinedIcon
               sx={{ color: 'grey', fontSize: 50 }}
               onClick={handleClose}
