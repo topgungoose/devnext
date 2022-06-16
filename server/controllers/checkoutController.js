@@ -2,6 +2,7 @@ require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 /**
+ * @type {object}
  * @desc Checkout middleware controller, contains all middleware functions.
  */
 const checkoutController = {};
@@ -33,12 +34,13 @@ checkoutController.createCheckoutSession = async (req, res) => {
       success_url: 'http://localhost:8080/success',
       cancel_url: 'http://localhost:8080/signup',
     });
-    res.json({ url: session.url }); // success or cancel url is sent back to the user as a response that is later opened with the window API on the front end.
+    res.locals.responseURL = { url: session.url }; // success or cancel url is sent back to the user as a response that is later opened with the window API on the front end.
+    return next();
   } catch (err) {
     return next({
       log: 'Error caught in createCheckoutSession in checkoutController!',
       status: 500,
-      message: { err },
+      message: { err: JSON.stringify(error) },
     });
   }
 };
