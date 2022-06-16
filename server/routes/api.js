@@ -5,35 +5,27 @@ const checkoutController = require('../controllers/checkoutController');
 const router = express.Router();
 
 /**
- * Route post requests to /signup through the userController.createUser middleware
+ * Route get request to '/' through itemController.getAllItems middleware. Add "items" to response object.
  */
-router.post('/signup', userController.createUser, (req, res) => {
-  res.status(200).send('Sign up successful!');
+ router.get('/', 
+ itemController.getAllItems,
+ (req, res) => {
+   res.status(200).json(res.locals.items);
 });
 
 /**
- * Route post request to /sell/:userId through itemController.postItem & userController.updateProductList middleware
+ * Route post requests to /signup through the userController.createUser middleware
  */
-router.post(
-  '/sell/:userId',
-  itemController.postItem,
-  userController.updateProductList,
+router.post('/signup', 
+  userController.createUser,
   (req, res) => {
-    res.status(200).json(res.locals);
-  }
-);
-
-/**
- * Route post request to /fave through userController.updateFavList middleware. Add res.locals to response object. (Potential for )
- */
-router.post('/fav', userController.updateFavList, (req, res) => {
-  res.status(200).json(res.locals);
+    res.status(200).send('Sign up successful!');
 });
 
 /**
  * Route post request to /login through userController.verifyUser middleware, if verified, set success to true. Else, set success to false.
  */
-router.post(
+ router.post(
   '/login',
   userController.verifyUser,
   // userController.getProdsAndFavs,
@@ -52,17 +44,39 @@ router.post(
 );
 
 /**
- * Route get request to '/' through itemController.getAllItems middleware. Add "items" to response object.
+ * Route post request to /sell/:userId through itemController.postItem & userController.updateProductList middleware
  */
-router.get('/', itemController.getAllItems, (req, res) => {
-  res.status(200).json(res.locals.items);
+router.post(
+  '/sell/:userId',
+  itemController.postItem,
+  userController.updateProductList,
+  (req, res) => {
+    res.status(200).json(res.locals);
+  }
+);
+
+router.post('/favs',
+  userController.getProductsAndFavItems, //finditem for favs
+  (req, res) => {
+    res.status(200).json(res.locals);
+  })
+
+/**
+ * Route post request to /fave through userController.updateFavList middleware. Add res.locals to response object. (Potential for )
+ */
+router.patch('/favs', 
+  userController.updateFavList,
+  (req, res) => {
+    res.status(200).json(res.locals);
 });
 
 /**
  * Route post request to '/updateItem' through itemController.updateItem middleware.
  */
-router.post('/updateItem', itemController.updateItem, (req, res) => {
-  res.status(200).send('Updated item!');
+router.post('/updateItem', 
+  itemController.updateItem,
+  (req, res) => {
+    res.status(200).send('Updated item!');
 });
 
 /**
@@ -71,8 +85,10 @@ router.post('/updateItem', itemController.updateItem, (req, res) => {
 router.post(
   '/checkout',
   itemController.findItem,
-  checkoutController.createCheckoutSession
-);
+  checkoutController.createCheckoutSession,
+  (req, res) => {
+    res.json(res.locals.responseURL);
+});
 
 module.exports = router;
 

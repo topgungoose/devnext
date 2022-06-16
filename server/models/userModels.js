@@ -21,7 +21,7 @@ const userSchema = new Schema({
 });
 
 /**
- * @desc User document model, can query the User collection and use CRUD methods
+ * @desc User document model, can query the User collection and use mongoose CRUD methods
  */
 const userModel = mongoose.model('User', userSchema);
 

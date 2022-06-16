@@ -11,7 +11,7 @@ const itemSchema = new Schema({
 });
 
 /**
- * @desc Items document model, can query the Items collection and use CRUD methods
+ * @desc Items document model, can query the Items collection and use mongoose CRUD methods
  */
 const itemsModel = mongoose.model('Items', itemSchema);
 
