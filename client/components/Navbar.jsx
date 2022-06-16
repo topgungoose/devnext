@@ -18,7 +18,6 @@ import {
   AccountCircle,
   MoreVert as MoreIcon,
   Favorite as FavoriteIcon,
-  Storefront as StorefrontIcon,
 } from '@mui/icons-material';
 
 import { styled, alpha } from '@mui/material/styles';

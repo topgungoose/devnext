@@ -24,12 +24,8 @@ export default function Post({ handleClose, id, username, reset }) {
   const [url, setUrl] = useState('');
   const [type, setType] = useState('');
 
-  /**
-   * - Posts
-   */
+  /** - Posts the products or services to the database  */
   function handleSubmit() {
-    // This preventDefault wont re-render our page with default values before we submit
-    // event.preventDefault();
     const postState = { name, price, details, url, type, username };
     fetch(`api/user/sell/:${id}`, {
       method: 'POST',
@@ -70,7 +66,6 @@ export default function Post({ handleClose, id, username, reset }) {
               name='type'
               value={type}
               label='Product type'
-              // onChange={(e) => setProductType(e.value)}
               onChange={(e) => setType(e.target.value)}
             >
               <MenuItem value={'Product'}>Product</MenuItem>
@@ -89,12 +84,12 @@ export default function Post({ handleClose, id, username, reset }) {
             <InputLabel htmlFor='outlined-adornment-amount'>Price</InputLabel>
             <OutlinedInput
               id='outlined-adornment-amount'
-              // value={values.amount}
               startAdornment={
                 <InputAdornment position='start'>$</InputAdornment>
               }
               label='Amount'
               name='price'
+              type='number'
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
             />
