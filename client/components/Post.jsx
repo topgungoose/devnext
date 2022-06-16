@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 
+/** MUI Components */
+import {
+  Box,
+  TextField,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Stack,
+  Button,
+  OutlinedInput,
+  InputAdornment,
+} from '@mui/material';
+
+/** Styles */
 import '../styles/Post.css';
 
-export default function Post({ handleClose, id, username }) {
+export default function Post({ handleClose, id, username, reset }) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [details, setDetails] = useState('');
   const [url, setUrl] = useState('');
   const [type, setType] = useState('');
 
-  console.log(name, price, details, url, type);
-  // MAKE SEPARATE HANDLE CHANGE FOR SELECT TYPE
-  console.log(id);
-  function handleSubmit(event) {
-    // This preventDefault wont re-render our page with default values before we submit
-    // event.preventDefault();
-
+  /** - Posts the products or services to the database  */
+  function handleSubmit() {
     const postState = { name, price, details, url, type, username };
     fetch(`api/user/sell/:${id}`, {
       method: 'POST',
@@ -37,6 +37,7 @@ export default function Post({ handleClose, id, username }) {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success', data);
+        reset();
       })
       .catch((err) => {
         console.error('Error:', err);
@@ -65,7 +66,6 @@ export default function Post({ handleClose, id, username }) {
               name='type'
               value={type}
               label='Product type'
-              // onChange={(e) => setProductType(e.value)}
               onChange={(e) => setType(e.target.value)}
             >
               <MenuItem value={'Product'}>Product</MenuItem>
@@ -84,12 +84,12 @@ export default function Post({ handleClose, id, username }) {
             <InputLabel htmlFor='outlined-adornment-amount'>Price</InputLabel>
             <OutlinedInput
               id='outlined-adornment-amount'
-              // value={values.amount}
               startAdornment={
                 <InputAdornment position='start'>$</InputAdornment>
               }
               label='Amount'
               name='price'
+              type='number'
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
             />

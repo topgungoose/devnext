@@ -9,6 +9,7 @@ import {
   Stack,
   IconButton,
 } from '@mui/material';
+
 import {
   Favorite as FavoriteIcon,
   Delete as DeleteIcon,
@@ -19,26 +20,26 @@ import { red } from '@mui/material/colors';
  * @represents Entire Product Item within the favorites list
  * @returns {component} FavsItem
  */
-export default function FavsItem({ handleOpen, favs }) {
+export default function FavsItem({ handleOpen, id }) {
   return (
     <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia
-        component="img"
-        height="194"
-        image="https://intl-blog.imgix.net/wp-content/uploads/2021/10/what-is-software-CA-Capterra-Header.png?auto=format%2Cenhance"
-        alt="Product Placeholder"
+        component='img'
+        height='194'
+        image='https://intl-blog.imgix.net/wp-content/uploads/2021/10/what-is-software-CA-Capterra-Header.png?auto=format%2Cenhance'
+        alt='Product Placeholder'
       />
       <CardContent>
         <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
           spacing={0}
         >
-          <Typography variant="subtitle1" color="text.primary">
+          <Typography variant='subtitle1' color='text.primary'>
             Product Name
           </Typography>
-          <Typography variant="subtitle2" color="text.secondary">
+          <Typography variant='subtitle2' color='text.secondary'>
             Placeholder
           </Typography>
         </Stack>
@@ -50,11 +51,11 @@ export default function FavsItem({ handleOpen, favs }) {
             margin: 1,
             backgroundColor: '#d9ed92',
           }}
-          size="small"
-          label="Product"
+          size='small'
+          label='Product'
         />
       </CardContent>
-      <IconButton aria-label="share">
+      <IconButton aria-label='share'>
         <DeleteIcon sx={{ fontSize: 25 }} />
       </IconButton>
     </Card>
