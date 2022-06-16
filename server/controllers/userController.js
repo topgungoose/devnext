@@ -54,14 +54,14 @@ userController.createUser = async (req, res, next) => {
  */
  userController.getProductsAndFavItems = async (req, res, next) => {
   try {
-  const { userId } = req.body;
-  const user = await User.findOne({ id: userId }).exec();
+    const { userId } = req.body;
+    const user = await User.findOne({ id: userId }).exec();
 
-  const userFavList = user.favs.map(async (item) => await Item.findById(item)); 
-  const resolvedFavList = await Promise.all(userFavList);
+    const userFavList = user.favs.map(async (item) => await Item.findById(item)); 
+    const resolvedFavList = await Promise.all(userFavList);
 
-  const userProductList = user.products.map(async (item) => await Item.findById(item)); 
-  const resolvedProductList = await Promise.all(userProductList);
+    const userProductList = user.products.map(async (item) => await Item.findById(item)); 
+    const resolvedProductList = await Promise.all(userProductList);
 
     res.locals = { products: resolvedProductList, favs: resolvedFavList };
     return next();

@@ -34,7 +34,7 @@ checkoutController.createCheckoutSession = async (req, res) => {
       success_url: 'http://localhost:8080/success',
       cancel_url: 'http://localhost:8080/signup',
     });
-    res.locals.responseURL = { url: session.url };
+    res.locals.responseURL = { url: session.url }; // success or cancel url is sent back to the user as a response that is later opened with the window API on the front end.
     return next();
   } catch (err) {
     return next({
