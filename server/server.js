@@ -17,7 +17,7 @@ mongoose.connect(
 );
 
 mongoose.connection.once('open', () => {
-  console.log(`Connected to ${process.env.NODE_ENV} Database 🥳`);
+  console.log(`Connected to ${process.env.NODE_ENV} database 🥳`);
 });
 
 const app = express();
@@ -35,7 +35,7 @@ app.use('/api/user', apiRouter);
 
 // app.use('/');
 app.get('/api', (req, res) => {
-  res.status(200).json('Hello World from Server!');
+  res.status(200).json('Hello World!');
 });
 
 app.use('*', (req, res) => {

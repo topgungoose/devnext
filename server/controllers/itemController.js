@@ -2,110 +2,92 @@ const Item = require('../models/itemModels');
 
 const itemController = {};
 
-itemController.getAllItems = (req, res, next) => {
-  Item.find({}, (err, items) => {
-    // if a database error occurs, call next with the error message passed in
-    // for the express global error handler to catch
-    if (err)
-      return next(
-        'Error in userController.getAllItems: ' + JSON.stringify(err)
-      );
-
+itemController.getAllItems = async (req, res, next) => {
+  try {
     // store retrieved users into res.locals and move on to next middleware
+    const items = await Item.find({}).exec();
     res.locals.items = items;
     return next();
-  });
-};
-
-itemController.postItem = (req, res, next) => {
-  const { name, price, details, url, type, username } = req.body;
-
-  Item.create({ name, price, details, url, type, username })
-    .then((newItem) => {
-      console.log(newItem);
-      res.locals.newItem = newItem;
-      return next();
+  }
+  catch (err) {
+    // if an error occurs in the database, call next with the error message passed in
+    // for the express global error handler to catch
+    return next({
+      log: 'Error in itemController.getAllItems',
+      status: 500,
+      message: { err: JSON.stringify(err) }
     })
-    .catch((err) => {
-      next({
-        log: `itemController.postItem: ERROR: ${err}`,
-        err: { err: 'Error occurred in itemController.postItem' },
-      });
-    });
+  }
 };
 
-// itemController.findItem = (req, res, next) => {
-//     const { name, price, details } = req.body
-//     Item.find({name: name})
-//         .then(foundItem => {
-
-//             res.locals.item = foundItem
-//             res.locals.succsess = true
-//             return next()
-//             // if (foundItem.length === 0) {
-
-//             // }
-//             // else {
-//             //     res.locals.success = false
-//             //     return next()
-//             // }
-
-//         })
-//         .catch(err => {
-//             next({
-//                 log: `itemController.findItem: ERROR: ${err}`,
-//                 err:  {err: 'Error occurred in itemController.findItem'}
-//             })
-//         })
-// }
-
-itemController.findItem = (req, res, next) => {
-  const { itemId } = req.body;
-  console.log(itemId);
-  Item.findById(itemId)
-    .exec()
-    .then((foundItem) => {
-      //   console.log(foundItem);
-      res.locals.foundItem = foundItem;
-      next();
-    })
-    .catch((err) => {
-      next({
-        log: `itemController.findItem: ERROR: ${err}`,
-        err: { err: 'Error occurred in itemController.findItem' },
-      });
+itemController.postItem = async (req, res, next) => {
+  try {
+    const { name, price, details, url, type, username } = req.body;
+    const newItem = await Item.create({
+      name,
+      price,
+      details,
+      url,
+      type,
+      username
     });
+    res.locals.newItem = newItem;
+    return next();
+  }
+  catch (err) {
+    return next({
+      log: 'Error occurred in itemController.postItem',
+      status: 500,
+      message: { err: JSON.stringify(err) },
+    });
+  }
 };
 
-itemController.updateItem = (req, res, next) => {
-  const { name, price, details, url, type } = req.body;
 
-  Item.updateOne({ name, price, details, url, type })
-    .then((updatedItem) => {
-      console.log(updatedItem);
-      return next();
-    })
-    .catch((err) => {
-      next({
-        log: `itemController.updateItem: ERROR: ${err}`,
-        err: { err: 'Error occurred in itemController.updateItem' },
-      });
+itemController.findItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.body;
+    const foundItem = await Item.findById(itemId).exec();
+    res.locals.foundItem = foundItem;
+    return next();
+  }
+  catch (err) {
+    return next({
+      log: 'Error occurred in itemController.findItem',
+      status: 500,
+      message: { err: JSON.stringify(err) }
     });
+  }
 };
 
-// itemController.deleteItem = (req, res, next) => {
-//     const {name} = req.body
+itemController.updateItem = async (req, res, next) => {
+  try {
+    const { name, price, details, url, type, username } = req.body;
+    await Item.updateOne({ name, price, details, url, type, username }).exec()
+    return next();
+  }
+  catch (err) {
+    return next({
+      log: 'Error occurred in itemController.updateItem',
+      status: 500,
+      message: { err: JSON.stringify(err) }
+    });
+  }
+};
 
-//     Item.deleteOne({name : name})
-//         .then(item => {
-//             return next()
-//         })
-//         .catch(err => {
-//             next({
-//                 log: `itemController.deleteItem: ERROR: ${err}`,
-//                 err:  {err: 'Error occurred in itemController.deleteItem'}
-//             })
-//         })
+// itemController.deleteItem = async (req, res, next) => {
+//   try {
+//     const { name } = req.body;
+//     await Item.deleteOne({ name }).exec();
+//     return next()
+//   }
+//   catch (err) {
+//     return next({
+//       log: 'Error occurred in itemController.deleteItem',
+//       status: 500,
+//       message: { err: JSON.stringify(err) }
+//     });
+//   }
 // }
 
 module.exports = itemController;
