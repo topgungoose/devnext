@@ -2,12 +2,51 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const itemController = require('../controllers/itemController');
 const checkoutController = require('../controllers/checkoutController');
+
 const router = express.Router();
 
-router.post('/signup', userController.createUser, (req, res) => {
-  res.status(200).send('Sign up succeed!');
+/**
+ * Route get request to '/' through itemController.getAllItems middleware. Add "items" to response object.
+ */
+ router.get('/', 
+ itemController.getAllItems,
+ (req, res) => {
+   res.status(200).json(res.locals.items);
 });
 
+/**
+ * Route post requests to /signup through the userController.createUser middleware
+ */
+router.post('/signup', 
+  userController.createUser,
+  (req, res) => {
+    res.status(200).send('Sign up successful!');
+});
+
+/**
+ * Route post request to /login through userController.verifyUser middleware, if verified, set success to true. Else, set success to false.
+ */
+ router.post(
+  '/login',
+  userController.verifyUser,
+  // userController.getProdsAndFavs,
+  (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    if (res.locals.data) {
+      res.status(200).json({
+        success: true,
+        message: 'Log in succeed!',
+        data: res.locals,
+      });
+    } else {
+      res.status(404).json({ success: false, message: 'Log in failed!' });
+    }
+  }
+);
+
+/**
+ * Route post request to /sell/:userId through itemController.postItem & userController.updateProductList middleware
+ */
 router.post(
   '/sell/:userId',
   itemController.postItem,
@@ -17,30 +56,47 @@ router.post(
   }
 );
 
-router.post('/fav', userController.updateFavList, (req, res) => {
-  res.status(200).json(res.locals);
+router.post('/favs',
+  userController.getProductsAndFavItems, //finditem for favs
+  (req, res) => {
+    res.status(200).json(res.locals);
+  })
+
+/**
+ * Route post request to /fave through userController.updateFavList middleware. Add res.locals to response object. (Potential for )
+ */
+router.patch('/favs', 
+  userController.updateFavList,
+  (req, res) => {
+    res.status(200).json(res.locals);
 });
 
-router.post('/login', userController.verifyUser, (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  //if it is verified
-  if (res.locals.found) {
-    res.status(200).json({ success: true, message: 'Log in succeed!' });
-  } else {
-    //res.status(404).send('Log in failed!');
-    res.status(404).json({ success: false, message: 'Log in failed!' });
-  }
+/**
+ * Route post request to '/updateItem' through itemController.updateItem middleware.
+ */
+router.post('/updateItem', 
+  itemController.updateItem,
+  (req, res) => {
+    res.status(200).send('Updated item!');
 });
 
-///////////////////////////////////////////// Do these have to be in a different router? /////////////////////////////////////////////
-
-router.get('/', itemController.getAllItems, (req, res) => {
-  res.status(200).json(res.locals.items);
+/**
+ * Route post request to '/checkout' through itemController.findItem and checkoutController.createCheckoutSession middleware. (? No response object ?)
+ */
+router.post(
+  '/checkout',
+  itemController.findItem,
+  checkoutController.createCheckoutSession,
+  (req, res) => {
+    res.json(res.locals.responseURL);
 });
 
-router.post('/sell', itemController.postItem, (req, res) => {
-  res.status(200).send('Item post succeeded!');
-});
+module.exports = router;
+
+///////////////////////// REVIEW IF USEFUL ////////////////////////
+// router.post('/sell', itemController.postItem, (req, res) => {
+//   res.status(200).send('Item post succeeded!');
+// });
 
 // still not working
 // router.post('findItem', itemController.findItem, (req, res) => {
@@ -59,29 +115,7 @@ router.post('/sell', itemController.postItem, (req, res) => {
 //   // }
 // })
 
-router.post('/updateItem', itemController.updateItem, (req, res) => {
-  res.status(200).send('Updated item!');
-});
-
 // Still not working
 // router.post('/deleteItem'), itemController.deleteItem, (req, res) => {
 //   res.status(200).send('Deleted item!')
 // }
-
-// router.get('/',
-//   starWarsController.getCharacters,
-//   (req, res) => res.status(200).json(res.locals.people)
-// );
-
-// router.post('/character',
-//   starWarsController.addCharacter,
-//   (req, res) => res.status(200).json(res.locals.oneCharacter)
-// );
-
-router.post(
-  '/checkout',
-  itemController.findItem,
-  checkoutController.createCheckoutSession
-);
-
-module.exports = router;

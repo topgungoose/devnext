@@ -1,16 +1,27 @@
 import React from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { red } from '@mui/material/colors';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
+
+import { Stack, Button, Avatar, IconButton } from '@mui/material';
+
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+
 import '../styles/ProductModal.css';
 
-export default function ProductModal({ handleClose }) {
-  const data = { itemId: '62a686d32af2f50c8f15d894' };
+/**
+ * ProductModal - Returns popup containing product details (name, price, type)
+ * @param {object} State
+ * @returns {div}
+ */
+export default function ProductModal({ currentItemDetails, handleClose }) {
+  const { name, price, url, details, type, _id, username } = currentItemDetails;
 
+  const data = { itemId: _id };
+
+  /**
+   * handleClick - After user clicks on button to 'buy' product
+   * the user is redirected to checkout page
+   */
   function handleClick() {
-    fetch('http://localhost:8080/api/user/checkout', {
+    fetch('api/user/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +33,8 @@ export default function ProductModal({ handleClose }) {
         return res.json().then((json) => Promise.reject(json));
       })
       .then(({ url }) => {
-        window.location = url;
+        window.open(url);
+        handleClose();
       })
       .catch((err) => {
         console.log(e.error);
@@ -33,56 +45,17 @@ export default function ProductModal({ handleClose }) {
     <div className='product-modal'>
       <div className='img-container'>
         <div className='inside-image-container'>
-          <img
-            className='imgModal'
-            src='https://ithemes.com/wp-content/uploads/2019/08/What-is-Your-Website-Design-Process-Blog-Post-Feature-Image-36119-01.png'
-          />
-          <h1>Type: Service</h1>
-          <h1>Price: $99</h1>
+          <img className='imgModal' src={url} />
+          <h1>Type: {type}</h1>
+          <h1>Price: ${price}</h1>
         </div>
         <div className='txt-container'>
-          <h1>Let me build with you a website with HTML/CSS/Javascript</h1>
-          <Avatar
-            alt='Howard Stark'
-            src='https://dailysuperheroes.com/wp-content/uploads/2020/02/tony-stark.jpg'
-            sx={{ width: 56, height: 56 }}
-          />
-          By Howard Stark
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempor
-            id eu nisl nunc mi ipsum. Duis at tellus at urna condimentum. Vitae
-            tempus quam pellentesque nec nam aliquam sem et tortor. Odio ut sem
-            nulla pharetra diam sit. Nisl purus in mollis nunc sed id. At erat
-            pellentesque adipiscing commodo elit at. Pharetra massa massa
-            ultricies mi. Faucibus ornare suspendisse sed nisi lacus sed viverra
-            tellus in. Nunc vel risus commodo viverra maecenas accumsan lacus
-            vel. Ac placerat vestibulum lectus mauris ultrices eros in cursus
-            turpis. Feugiat in ante metus dictum. Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Tempor id eu nisl nunc mi ipsum. Duis
-            at tellus at urna condimentum. Vitae tempus quam pellentesque nec
-            nam aliquam sem et tortor. Odio ut sem nulla pharetra diam sit. Nisl
-            purus in mollis nunc sed id. At erat pellentesque adipiscing commodo
-            elit at. Pharetra massa massa ultricies mi. Faucibus ornare
-            suspendisse sed nisi lacus sed viverra tellus in. Nunc vel risus
-            commodo viverra maecenas accumsan lacus vel.
-            <br />
-            <br />
-            <br />
-            Ac placerat vestibulum lectus mauris ultrices eros in cursus turpis.
-            Feugiat in ante metus dictum. Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Tempor id eu nisl nunc mi ipsum. Duis
-            at tellus at urna condimentum. Vitae tempus quam pellentesque nec
-            nam aliquam sem et tortor. Odio ut sem nulla pharetra diam sit. Nisl
-            purus in mollis nunc sed id. At erat pellentesque adipiscing commodo
-            elit at. Pharetra massa massa ultricies mi. Faucibus ornare
-            suspendisse sed nisi lacus sed viverra tellus in. Nunc vel risus
-            commodo viverra maecenas accumsan lacus vel. Ac placerat vestibulum
-            lectus mauris ultrices eros in cursus turpis. Feugiat in ante metus
-            dictum.
-          </p>
+          <h1>{name}</h1>
+          <Avatar sx={{ width: 56, height: 56, backgroundColor: '#9FAEE5' }}>
+            {username[0]}
+          </Avatar>
+          By {username}
+          <p>{details}</p>
         </div>
       </div>
       <div className='product-modal'>
@@ -91,10 +64,13 @@ export default function ProductModal({ handleClose }) {
           direction='row'
           spacing={2}
         >
-          <FavoriteIcon
-            sx={{ color: red[500], fontSize: 50 }}
-            onClick={handleClose}
-          />
+          <IconButton>
+            <FavoriteBorderOutlinedIcon
+              sx={{ color: 'grey', fontSize: 50 }}
+              onClick={handleClose}
+            />
+          </IconButton>
+
           <Button
             onClick={handleClick}
             sx={{ backgroundColor: '#80ed99' }}

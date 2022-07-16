@@ -1,92 +1,33 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 
+/** MUI Components */
+import {
+  Box,
+  TextField,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Stack,
+  Button,
+  OutlinedInput,
+  InputAdornment,
+} from '@mui/material';
+
+/** Styles */
 import '../styles/Post.css';
 
-export default function Post({ handleClose }) {
-  const [productType, setProductType] = useState('');
-  const [postState, setPostState] = useState({
-    type: '',
-    name: '',
-    price: 0,
-    details: '',
-    url: '',
-  });
+export default function Post({ handleClose, id, username, reset }) {
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [details, setDetails] = useState('');
+  const [url, setUrl] = useState('');
+  const [type, setType] = useState('');
 
-  // const handleChange = (event) => {
-  //   setProductType(event.target.value);
-  // };
-
-  //<DropDownList data={categories} onChange={e => setCategory(e.value)} />
-
-  function handlePriceChange(event) {
-    event.persist();
-    setPostState((prevPostData) => {
-      if (!event.target.value) {
-        return {
-          ...prevPostData,
-          price: 0,
-        };
-      } else
-        return {
-          ...prevPostData,
-          price: parseInt(event.target.value),
-        };
-    });
-  }
-  console.log(postState);
-
-  function handleNameChange(event) {
-    event.persist();
-    setPostState((prevPostData) => {
-      return {
-        ...prevPostData,
-        name: event.target.value,
-      };
-    });
-  }
-  function handleUrlChange(event) {
-    event.persist();
-    setPostState((prevPostData) => {
-      return {
-        ...prevPostData,
-        url: event.target.value,
-      };
-    });
-  }
-  function handleDetailsChange(event) {
-    event.persist();
-    setPostState((prevPostData) => {
-      return {
-        ...prevPostData,
-        details: event.target.value,
-      };
-    });
-  }
-  function handleTypeChange(event) {
-    setPostState((prevPostData) => {
-      return {
-        ...prevPostData,
-        type: event.target.value,
-      };
-    });
-  }
-
-  // MAKE SEPARATE HANDLE CHANGE FOR SELECT TYPE
-
-  function handleSubmit(event) {
-    // This preventDefault wont re-render our page with default values before we submit
-    // event.preventDefault();
-    fetch('http://localhost:8080/api/user/sell/:userId', {
+  /** - Posts the products or services to the database  */
+  function handleSubmit() {
+    const postState = { name, price, details, url, type, username };
+    fetch(`api/user/sell/:${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'Application/JSON',
@@ -96,17 +37,11 @@ export default function Post({ handleClose }) {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success', data);
+        reset();
       })
       .catch((err) => {
         console.error('Error:', err);
       });
-    setPostState({
-      type: '',
-      name: '',
-      price: 0,
-      details: '',
-      url: '',
-    });
     handleClose();
   }
 
@@ -129,10 +64,9 @@ export default function Post({ handleClose }) {
               labelId='demo-simple-select-label'
               id='demo-simple-select'
               name='type'
-              value={postState.type}
+              value={type}
               label='Product type'
-              // onChange={(e) => setProductType(e.value)}
-              onChange={handleTypeChange}
+              onChange={(e) => setType(e.target.value)}
             >
               <MenuItem value={'Product'}>Product</MenuItem>
               <MenuItem value={'Service'}>Services</MenuItem>
@@ -142,22 +76,22 @@ export default function Post({ handleClose }) {
           <TextField
             label='Title'
             placeholder='Tell us the name of your product or service'
-            onChange={handleNameChange}
+            onChange={(e) => setName(e.target.value)}
             name='name'
-            value={postState.name}
+            value={name}
           />
           <FormControl fullWidth sx={{ m: 1 }}>
             <InputLabel htmlFor='outlined-adornment-amount'>Price</InputLabel>
             <OutlinedInput
               id='outlined-adornment-amount'
-              // value={values.amount}
               startAdornment={
                 <InputAdornment position='start'>$</InputAdornment>
               }
               label='Amount'
               name='price'
-              value={postState.price}
-              onChange={handlePriceChange}
+              type='number'
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
             />
           </FormControl>
           <TextField
@@ -166,16 +100,16 @@ export default function Post({ handleClose }) {
             rows={3}
             variant='outlined'
             placeholder="Tell us more about about what you're selling"
-            onChange={handleDetailsChange}
+            onChange={(e) => setDetails(e.target.value)}
             name='details'
-            value={postState.details}
+            value={details}
           />
           <TextField
             label='Image URL'
             placeholder='Enter image URL'
-            onChange={handleUrlChange}
+            onChange={(e) => setUrl(e.target.value)}
             name='url'
-            value={postState.url}
+            value={url}
           />
         </div>
         <Stack

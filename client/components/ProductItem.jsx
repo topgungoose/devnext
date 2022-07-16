@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Chip,
+  Stack,
+} from '@mui/material';
 
+/**
+ * ProductItem - Returns Card component which contains all card details
+ * @param {object} State
+ * @returns {React.component} Card component
+ */
 export default function ProductItem({
   name,
   price,
   url,
-  details,
   type,
-  _id,
   handleOpen,
+  setItem,
 }) {
+  /** - Set item detail's for Product Modal and opens it  */
+  const handleClick = () => {
+    setItem();
+    handleOpen();
+  };
+
   return (
-    <Card onClick={handleOpen} sx={{ maxWidth: 345, position: 'relative' }}>
+    <Card onClick={handleClick} sx={{ maxWidth: 345, position: 'relative' }}>
       <CardMedia component='img' height='194' image={url} alt={name} />
       <CardContent>
         <Stack
@@ -38,10 +50,10 @@ export default function ProductItem({
             top: 0,
             left: 0,
             margin: 1,
-            backgroundColor: type === 'false' ? '#d9ed92' : '#caf0f8',
+            backgroundColor: type === 'Product' ? '#d9ed92' : '#caf0f8',
           }}
           size='small'
-          label={type === 'false' ? 'Product' : 'Service'}
+          label={type === 'Product' ? 'Product' : 'Service'}
         />
       </CardContent>
     </Card>

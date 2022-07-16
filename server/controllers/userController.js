@@ -1,114 +1,175 @@
-const User = require('../models/userModels');
+// TODO: Refactor the entire Controller to Async/Await
 
+const User = require('../models/userModels');
+const Item = require('../models/itemModels'); // used this in the getProdsAndFavs
+const { ClickAwayListener } = require('@mui/material');
+
+/**
+ * @type {object}
+ * @desc User middleware controller, contains all middleware functions.
+ */
 const userController = {};
 
 /**
- * getAllUsers - retrieve all users from the database and stores it into res.locals
- * before moving on to next middleware.
+ * @desc Retrieves all users from the database.
+ * @returns res.locals.users
  */
-userController.getAllUsers = (req, res, next) => {
-  User.find({}, (err, users) => {
-    // if a database error occurs, call next with the error message passed in
-    // for the express global error handler to catch
-    if (err)
-      return next(
-        'Error in userController.getAllUsers: ' + JSON.stringify(err)
-      );
-
-    // store retrieved users into res.locals and move on to next middleware
-    res.locals.users = users;
+userController.getAllUsers = async (req, res, next) => {
+  try {
+    const foundUsers = await User.find({}).exec();
+    res.locals.users = foundUsers;
     return next();
-  });
+
+  } catch(error) {
+    return next({
+      log: 'Error in getAllUsers method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
+    });
+  }
 };
 
 /**
- * createUser - create and save a new User into the database.
+ * @desc Creates a user in the database.
+ * @returns Nothing.
  */
-userController.createUser = (req, res, next) => {
-  // write code here
-  const { username, password } = req.body;
-  // const username = req.body.username;
-  // const password = req.body.password;
-  //console.log(username,password);
+userController.createUser = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    await User.create({ username, password })
+    return next();
 
-  // console.log(req.body);
-  User.create({ username, password })
-    .then((doc) => {
-      // res.locals.createdUser = doc;
-      console.log(doc);
-      next();
-    })
-    .catch((err) => {
-      next({
-        log: `userController.createUser: ERROR: ${err}`,
-        message: { err: 'Error occurred in userController.createUser.' },
-      });
+  } catch(error) {
+    return next({
+      log: 'Error in createUser method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
     });
+  }
 };
 
 /**
- * verifyUser - Obtain username and password from the request body, locate
- * the appropriate user in the database, and then authenticate the submitted password
- * against the password stored in the database.
+ * @desc Finds a user and returns their fav list and product list with each item's description
+ * @returns an object containing the products and favs properties
  */
-userController.verifyUser = (req, res, next) => {
-  // write code here
-  const { username, password } = req.body;
+ userController.getProductsAndFavItems = async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    const user = await User.findOne({ id: userId }).exec();
 
-  console.log(req.body);
-  User.find({ username: username, password: password })
-    .then((doc) => {
-      console.log('this is doc', doc);
-      if (doc.length === 0) res.locals.found = false;
-      else {
-        res.locals.found = true;
-      }
-      next();
+    const userFavList = user.favs.map(async (item) => await Item.findById(item)); 
+    const resolvedFavList = await Promise.all(userFavList);
+
+    const userProductList = user.products.map(async (item) => await Item.findById(item)); 
+    const resolvedProductList = await Promise.all(userProductList);
+
+    res.locals = { products: resolvedProductList, favs: resolvedFavList };
+    return next();
+  } catch {
+    return next({
+      log: 'Error in getFavList method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
     })
-    .catch((err) => {
-      next({
-        log: `userController.verifyUser: ERROR: ${err}`,
-        message: { err: 'Error occurred in userController.verifyUser.' },
-      });
+  }
+};
+//get productList in favs
+//findoneanddelete user's product list
+
+/**
+ * @desc Obtain username and password from the request body, locate the appropriate user in the database, and then authenticate the submitted password against the password stored in the database.
+ * @returns res.locals.data
+ */
+userController.verifyUser = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const foundUser = await User.findOne({ username: username, password: password }).exec();
+
+    if (foundUser === null) res.locals.data = false;
+    else res.locals.data = foundUser;
+    return next();
+
+   } catch(error) {
+    return next({
+      log: 'Error in verifyUser method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
     });
+  }
 };
 
-// user.populate() add new instance of items in array    api/user/sell
+/**
+ * @desc Obtains a user and updates their list of products in the database.
+ * @returns an updated product list stored in res.locals to be destructured in the front-end response.
+ */
+userController.updateProductList = async (req, res, next) => {
+  try {
+    const updatedProducts = await User.updateOne({ id: userId }, { $push: { products: res.locals.newItem._id } }).exec();
+    res.locals = updatedProducts;
+    return next();
 
-userController.updateProductList = (req, res, next) => {
-  // get id from params
-  const { userId } = req.params;
-  User.updateOne(
-    { id: userId },
-    { $push: { products: res.locals.newItem._id } }
-  )
-    .then((updatedItem) => {
-      res.locals = updatedItem;
-      return next();
+  } catch(error) {
+    return next({
+      log: 'Error in updateProductList method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
     })
-    .catch((err) => {
-      return next({
-        log: `userController.updateProductList: ERROR: ${err}`,
-        message: { err: 'Error occurred in userController.updateProductList.' },
-      });
-    });
+  }
 };
 
-userController.updateFavList = (req, res, next) => {
+/**
+ * @desc Finds a user and updates their list of favorites with the item sent along in the body
+ * @returns an updated favorites list stored in res.locals to be destructured in the front-end response.
+ */
+userController.updateFavList = async (req, res, next) => {
+  try {
   const { itemId, userId } = req.body;
-  console.log(itemId, userId);
-  User.updateOne({ id: userId }, { $push: { favs: itemId } })
-    .then((updatedItem) => {
-      res.locals = updatedItem;
-      return next();
+  const updatedFavList = await User.updateOne({ id: userId }, { $push: { favs: itemId } }).exec();
+    res.locals = updatedFavList;
+    return next();
+  } catch {
+    return next({
+      log: 'Error in updateFavList method in userController!',
+      status: 500,
+      message: { err: JSON.stringify(error) },
     })
-    .catch((err) => {
-      return next({
-        log: `userController.updateFavList: ERROR: ${err}`,
-        message: { err: 'Error occurred in userController.updateFavList.' },
-      });
-    });
+  }
 };
-// user.getAllItems()   api/items/getAll
 
 module.exports = userController;
+
+
+//Stored, to be used later as development continues.
+// user.populate() add new instance of items in array    api/user/sell
+
+// userController.getProdsAndFavs = async (req, res, next) => {
+//   try {
+//     const { products, favs } = res.locals.data;
+//     const productItems = await products.map(async (id) => {
+//       try {
+//         const foundItem = await Item.findById(id);
+//         // console.log(foundItem);
+//         return foundItem;
+//       } catch (err) {
+//         return next(err);
+//       }
+//     });
+
+//     const favItems = await favs.map(async (id) => {
+//       try {
+//         const foundItem = await Item.findById(id);
+//         // console.log(foundItem);
+//         return foundItem;
+//       } catch (err) {
+//         return next(err);
+//       }
+//     });
+
+//     res.locals.productItems = productItems;
+//     res.locals.favItems = favItems;
+//     console.log(res.locals);
+//     return next();
+//   } catch (err) {
+//     return next(err);
+//   }
+// };

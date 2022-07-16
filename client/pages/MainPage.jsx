@@ -1,25 +1,35 @@
-import Navbar from '../components/Navbar';
-import Anchor from '../components/Anchor';
-import Home from '../components/Home';
-import React, { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import Favs from '../components/Favs';
-import MOCK_DATA from '../../MOCK_DATA';
+import React, { useState, useEffect } from 'react';
 
+/** Returns the location object that represents the current URL */
 import { useLocation } from 'react-router-dom';
+
+/** Components */
+import { Home, Navbar, Favs, Anchor } from '../components';
+
+/** MUI Components */
+import {
+  Box,
+  Drawer,
+  Typography,
+  Divider,
+  Avatar,
+  Stack,
+  IconButton,
+  CssBaseline,
+} from '@mui/material';
+
+/** MUI Icons */
+import {
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+} from '@mui/icons-material';
+
+/** MUI Styles */
+import { styled, useTheme } from '@mui/material/styles';
 
 const drawerWidth = 240;
 
+/** MUI Styled Components */
 const MainContainer = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -50,45 +60,88 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function MainPage() {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
 
-  const [searchInput, setSearchInput] = useState('');
+  const [openDrawer, setOpenDrawer] = useState(false); // determines drawer to open or not
 
-  // const [itemData, setItemData] = useState(MOCK_DATA);
+  const [searchInput, setSearchInput] = useState(''); //search bar input
+  // item data is the result of fetching database items
+  const [itemData, setItemData] = useState([]); // all items displayed in main, potentially rename
 
-  const [current, setCurrent] = useState('home');
+  const [current, setCurrent] = useState('home'); // determines current area by endpoint
 
-  const itemData = MOCK_DATA.filter(({ name }) =>
-    name.toLowerCase().includes(searchInput)
+  /**
+   * - Filters itemData from name
+   * @type {Array}
+   */
+  const filteredItemData = itemData.filter(({ name }) =>
+    name.toLowerCase().includes(searchInput.toLocaleLowerCase())
   );
 
+  /**
+   * @type {object}
+   * @property {string} _id - user's ID.
+   * @property {string} username - user's username.
+   * @property {string} password - user's password.
+   * @property {Array} products - Array of posted products items.
+   * @property {Array} favs -  Array of favorite items.
+   */
+  const userData = useLocation().state.data;
+
+  /** - Opens Drawer Component */
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpenDrawer(true);
   };
 
+  /** - Closes Drawer Component */
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpenDrawer(false);
   };
 
+  /** - Fetches all Item Data from server and sets it to 'itemData' state */
+  const getItems = () => {
+    fetch('/api/user')
+      .then((res) => res.json())
+      .then((data) => {
+        setItemData(data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  /** - Sets the 'itemData' state when the MainPage gets mounted */
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  /** @type {React.Component} */
   let currentElement;
 
+  /** Sets currentElement to the component to be rendered depending of the value of the  "current" state */
   if (current === 'home') {
-    currentElement = <Home itemData={itemData} />;
+    currentElement = (
+      <Home
+        itemData={filteredItemData}
+        reset={getItems}
+        userId={userData._id}
+        username={userData.username}
+      />
+    );
   } else if (current === 'favs') {
-    currentElement = <Favs />;
+    currentElement = <Favs favs={userData.favs} />;
   }
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Navbar
-        open={open}
-        handleDrawerOpen={handleDrawerOpen}
-        drawerWidth={drawerWidth}
-        theme={theme}
-        setCurrent={setCurrent}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
+        {...{
+          openDrawer,
+          handleDrawerOpen,
+          drawerWidth,
+          theme,
+          setCurrent,
+          searchInput,
+          setSearchInput,
+        }}
       />
       <Drawer
         sx={{
@@ -98,18 +151,21 @@ export default function MainPage() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#9FAEE5',
+            backgroundColor: '#485CC7',
+            color: 'white',
           },
         }}
         variant='persistent'
         anchor='left'
-        open={open}
+        open={openDrawer}
       >
         <DrawerHeader>
           <Stack direction='row' sx={{ alignItems: 'center' }} spacing={1}>
-            <Avatar sx={{ backgroundColor: '#9FAEE5' }}>S</Avatar>
+            <Avatar sx={{ backgroundColor: '#9FAEE5' }}>
+              {userData.username[0]}
+            </Avatar>
             <Typography variant='h5' component='p'>
-              Satty
+              {userData.username}
             </Typography>
           </Stack>
 
@@ -125,8 +181,9 @@ export default function MainPage() {
 
         <Anchor setCurrent={setCurrent} />
       </Drawer>
-      <MainContainer open={open}>
+      <MainContainer open={openDrawer}>
         <DrawerHeader />
+        {/* Current element changes depending on the value of "current" -- Either render home, favs, or other | refer to line 91 */}
         {currentElement}
       </MainContainer>
     </Box>
